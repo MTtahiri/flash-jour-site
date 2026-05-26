@@ -1,0 +1,62 @@
+/* Design Épuré et Ultra-Rapide pour Flash-Jour */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #111;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.logo { font-weight: 900; font-size: 1.5rem; color: #e63946; }
+.tagline { font-size: 0.9rem; color: #666; font-weight: 500; }
+
+.product-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.badge-live {
+    background: #e63946;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+h1 { font-size: 2.5rem; margin: 20px 0 10px 0; letter-spacing: -1px; }
+.sub-title { color: #666; font-size: 1.1rem; margin-bottom: 30px; }
+
+.price-box { margin: 20px 0; }
+.old-price { text-decoration: line-through; color: #999; font-size: 1.4rem; margin-right: 15px; }
+.new-price { color: #e63946; font-size: 2.5rem; font-weight: bold; }
+
+.cta-button {
+    display: block;
+    background: #111;
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: background 0.2s;
+    margin-top: 25px;
+}
+.cta-button:hover { background: #e63946; }
+
+footer { text-align: center; margin-top: 40px; color: #999; font-size: 0.9rem; }
