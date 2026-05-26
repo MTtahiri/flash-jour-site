@@ -1,47 +1,1581 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flash-Jour | Ventes Flash — 1 Produit, 1 Jour, Prix Imbattable</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash-Jour — UI/UX Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #FF1744;
+    --rouge-sombre: #C2002F;
+    --or: #FFB300;
+    --fond: #080808;
+    --fond2: #111111;
+    --fond3: #1a1a1a;
+    --texte: #F5F5F0;
+    --texte-dim: #888;
+    --vert: #00E676;
+    --bord: rgba(255,255,255,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--fond);
+    color: var(--texte);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ========= NAV TABS ========= */
+  .tabs {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,8,8,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--bord);
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 16px;
+  }
+  .tab {
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--bord);
+    background: transparent;
+    color: var(--texte-dim);
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: .3px;
+  }
+  .tab.active { background: var(--rouge); color: #fff; border-color: var(--rouge); }
+  .tab:hover:not(.active) { color: var(--texte); border-color: rgba(255,255,255,0.2); }
+
+  /* ========= PANELS ========= */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ========= PANEL 1 — ARBORESCENCE ========= */
+  .arbo {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+  }
+  .arbo h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    color: var(--texte);
+    margin-bottom: 6px;
+  }
+  .arbo .subtitle {
+    color: var(--texte-dim);
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+
+  .tree {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .tree-root {
+    background: var(--rouge);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+  }
+  .tree-root::after {
+    content: '';
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    width: 2px;
+    height: 24px;
+    background: var(--rouge);
+    transform: translateX(-50%);
+  }
+  .tree-root .icon { font-size: 24px; }
+  .tree-root h2 { font-size: 20px; font-weight: 700; }
+  .tree-root p { font-size: 12px; opacity: .8; }
+
+  .tree-level {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    position: relative;
+  }
+  .tree-level::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 16.6%;
+    right: 16.6%;
+    height: 2px;
+    background: var(--bord);
+  }
+
+  .tree-card {
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  .tree-card::before {
+    content: '';
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    width: 2px;
+    height: 24px;
+    background: var(--bord);
+    transform: translateX(-50%);
+  }
+  .tree-card.highlight { border-color: var(--rouge); }
+  .tree-card.highlight::after {
+    content: 'MVP FOCUS';
+    position: absolute;
+    top: -10px;
+    right: 12px;
+    background: var(--rouge);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+  .tree-card .card-icon { font-size: 28px; margin-bottom: 10px; }
+  .tree-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .tree-card p { font-size: 12px; color: var(--texte-dim); line-height: 1.5; }
+
+  .tree-sub {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .tree-sub-card {
+    background: var(--fond3);
+    border: 1px solid var(--bord);
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 12px;
+  }
+  .tree-sub-card .sub-label {
+    font-size: 10px;
+    color: var(--texte-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .tree-sub-card strong { display: block; font-size: 13px; margin-bottom: 4px; }
+  .tree-sub-card span { color: var(--texte-dim); font-size: 11px; }
+
+  .journey-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin: 48px 0 20px;
+  }
+  .journey {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 12px;
+  }
+  .journey-step {
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+    position: relative;
+  }
+  .journey-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -10px;
+    top: 20px;
+    color: var(--rouge);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .step-num {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--rouge);
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+  }
+  .step-label { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .step-detail { font-size: 11px; color: var(--texte-dim); line-height: 1.4; padding: 0 8px; }
+  .step-time {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--or);
+    background: rgba(255,179,0,.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ========= PANEL 2 — HOMEPAGE MOCKUP ========= */
+  .mockup-wrapper {
+    display: flex;
+    gap: 0;
+    min-height: calc(100vh - 53px);
+  }
+
+  /* Desktop preview */
+  .desktop-preview {
+    flex: 1;
+    background: var(--fond);
+    overflow-y: auto;
+    border-right: 1px solid var(--bord);
+  }
+
+  /* Annotations */
+  .annotations {
+    width: 300px;
+    background: var(--fond2);
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .annotations h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: var(--rouge);
+  }
+  .annot {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--bord);
+  }
+  .annot:last-child { border-bottom: none; }
+  .annot-num {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    background: var(--rouge);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  .annot h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .annot p { font-size: 12px; color: var(--texte-dim); line-height: 1.5; }
+  .annot .plugin-tag {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--vert);
+    background: rgba(0,230,118,.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* SITE HEADER */
+  .site-header {
+    background: rgba(8,8,8,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--bord);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .site-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--texte);
+  }
+  .site-logo span { color: var(--rouge); }
+  .header-right { display: flex; align-items: center; gap: 16px; }
+  .header-nav { font-size: 12px; color: var(--texte-dim); cursor: pointer; }
+  .header-nav:hover { color: var(--texte); }
+  .cart-btn {
+    background: var(--fond3);
+    border: 1px solid var(--bord);
+    color: var(--texte);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* URGENCY BAR */
+  .urgency-bar {
+    background: var(--rouge);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .5px;
+  }
+  .urgency-bar .dot {
+    width: 8px; height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(.7); }
+  }
+
+  /* HERO SECTION */
+  .hero {
+    padding: 40px 24px;
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-left {}
+  .badge-jour {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,23,68,.12);
+    border: 1px solid rgba(255,23,68,.3);
+    color: var(--rouge);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .badge-jour .fire { font-size: 14px; }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    color: var(--texte);
+  }
+  .hero-title .accent { color: var(--rouge); }
+
+  .hero-desc {
+    font-size: 14px;
+    color: var(--texte-dim);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* PRICE BLOCK */
+  .price-block {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .price-flash {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--texte);
+    line-height: 1;
+  }
+  .price-old {
+    font-size: 22px;
+    color: var(--texte-dim);
+    text-decoration: line-through;
+  }
+  .price-badge {
+    background: var(--rouge);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  /* COUNTDOWN */
+  .countdown-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--texte-dim);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .countdown {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .cdown-unit {
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    border-radius: 8px;
+    padding: 12px 16px;
+    text-align: center;
+    min-width: 66px;
+  }
+  .cdown-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--texte);
+    line-height: 1;
+    display: block;
+  }
+  .cdown-num.red { color: var(--rouge); }
+  .cdown-label-s {
+    font-size: 10px;
+    color: var(--texte-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+    display: block;
+  }
+  .cdown-sep {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--rouge);
+    align-self: center;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* STOCK */
+  .stock-bar-wrap { margin-bottom: 24px; }
+  .stock-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  .stock-label .alert { color: var(--rouge); font-weight: 700; }
+  .stock-bar {
+    background: var(--fond3);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .stock-fill {
+    background: linear-gradient(90deg, var(--rouge-sombre), var(--rouge));
+    height: 100%;
+    width: 23%;
+    border-radius: 4px;
+    transition: width .5s;
+  }
+
+  /* CTA */
+  .cta-btn {
+    width: 100%;
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    padding: 18px 32px;
+    border-radius: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,.08);
+    transform: translateX(-100%);
+    transition: transform .3s;
+  }
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,23,68,.4); }
+
+  .reassurance {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .reassurance-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--texte-dim);
+  }
+  .reassurance-item .check { color: var(--vert); }
+
+  /* HERO RIGHT — Product Image */
+  .hero-right { position: relative; }
+  .product-img-wrap {
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    border-radius: 16px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(255,23,68,.12) 0%, transparent 60%);
+  }
+  .product-placeholder {
+    font-size: 100px;
+    filter: grayscale(0.3);
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}
+  }
+  .social-proof-pop {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    background: rgba(8,8,8,.92);
+    border: 1px solid var(--bord);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .social-proof-pop .avatar-stack { display: flex; }
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--fond);
+    background: var(--rouge);
+    margin-left: -8px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .avatar:first-child { margin-left: 0; }
+  .social-proof-pop .sp-text { flex: 1; color: var(--texte-dim); line-height: 1.4; }
+  .sp-live { color: var(--rouge); font-weight: 700; }
+
+  /* OFFERS VITRINE */
+  .vitrine {
+    background: var(--fond2);
+    border-top: 1px solid var(--bord);
+    padding: 40px 24px;
+  }
+  .vitrine-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .vitrine-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    color: var(--texte-dim);
+  }
+  .vitrine-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .vitrine-card {
+    border: 1px solid var(--bord);
+    border-radius: 12px;
+    padding: 20px;
+    opacity: .5;
+    position: relative;
+  }
+  .vitrine-card.active-card { opacity: 1; border-color: var(--rouge); }
+  .vitrine-card .vc-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--texte-dim);
+    margin-bottom: 8px;
+  }
+  .vitrine-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .vitrine-card p { font-size: 12px; color: var(--texte-dim); }
+  .lock-icon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 16px;
+    opacity: .4;
+  }
+
+  /* SITE FOOTER */
+  .site-footer {
+    border-top: 1px solid var(--bord);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--texte-dim);
+  }
+
+  /* ========= PANEL 3 — MOBILE + CHECKOUT ========= */
+  .mobile-panel {
+    padding: 40px 20px 60px;
+    background: var(--fond);
+    min-height: calc(100vh - 53px);
+  }
+  .mobile-panel h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .mobile-panel .subtitle {
+    text-align: center;
+    color: var(--texte-dim);
+    font-size: 13px;
+    margin-bottom: 40px;
+  }
+
+  .phones-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+
+  .phone-frame {
+    width: 280px;
+    background: #0f0f0f;
+    border: 2px solid #2a2a2a;
+    border-radius: 40px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0,0,0,.6);
+  }
+  .phone-frame::before {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 6px;
+    background: #2a2a2a;
+    border-radius: 3px;
+    margin: 0 auto 16px;
+  }
+  .phone-label {
+    text-align: center;
+    font-size: 11px;
+    color: var(--texte-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 14px;
+    font-weight: 600;
+  }
+  .phone-content {
+    background: var(--fond);
+    border-radius: 28px;
+    overflow: hidden;
+  }
+
+  /* Mobile screen 1: Homepage */
+  .m-urgency {
+    background: var(--rouge);
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: .5px;
+  }
+  .m-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--bord);
+  }
+  .m-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+  }
+  .m-logo span { color: var(--rouge); }
+  .m-cart-icon { font-size: 20px; }
+
+  .m-hero {
+    padding: 20px 16px 12px;
+  }
+  .m-badge {
+    display: inline-block;
+    background: rgba(255,23,68,.15);
+    color: var(--rouge);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .m-product-img {
+    background: var(--fond2);
+    border-radius: 12px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+    font-size: 64px;
+    border: 1px solid var(--bord);
+  }
+  .m-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; line-height: 1.05; margin-bottom: 8px; }
+
+  .m-countdown {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .m-cunit {
+    flex: 1;
+    background: var(--fond2);
+    border-radius: 6px;
+    padding: 8px 4px;
+    text-align: center;
+    border: 1px solid var(--bord);
+  }
+  .m-cnum {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    line-height: 1;
+    display: block;
+    color: var(--rouge);
+  }
+  .m-clabel { font-size: 8px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; }
+
+  .m-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .m-price { font-family: 'Bebas Neue', sans-serif; font-size: 38px; }
+  .m-price-old { font-size: 16px; color: var(--texte-dim); text-decoration: line-through; }
+  .m-savings { font-size: 11px; background: var(--rouge); color: #fff; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+
+  .m-stock { margin-bottom: 14px; }
+  .m-stock-text { font-size: 10px; color: var(--rouge); font-weight: 700; margin-bottom: 5px; }
+  .m-bar { background: var(--fond3); height: 4px; border-radius: 2px; }
+  .m-bar-fill { background: var(--rouge); height: 100%; width: 23%; border-radius: 2px; }
+
+  .m-cta {
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .m-reassure {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    font-size: 9px;
+    color: var(--texte-dim);
+    padding-bottom: 16px;
+  }
+  .m-reassure span { display: flex; align-items: center; gap: 3px; }
+
+  /* Mobile screen 2: Checkout */
+  .m-checkout { padding: 0; }
+  .m-checkout-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--bord);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .m-back { font-size: 18px; cursor: pointer; }
+  .m-checkout-title { font-size: 14px; font-weight: 700; }
+  .m-steps {
+    display: flex;
+    padding: 12px 16px;
+    gap: 6px;
+    border-bottom: 1px solid var(--bord);
+  }
+  .m-step {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--fond3);
+  }
+  .m-step.done { background: var(--rouge); }
+  .m-order-recap {
+    background: var(--fond2);
+    margin: 12px;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .m-order-img { font-size: 32px; }
+  .m-order-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+  .m-order-info p { font-size: 11px; color: var(--texte-dim); }
+  .m-order-price { margin-left: auto; font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--rouge); }
+
+  .m-form { padding: 0 12px 12px; }
+  .m-field { margin-bottom: 10px; }
+  .m-field label { font-size: 10px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+  .m-field input {
+    width: 100%;
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: var(--texte);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    outline: none;
+  }
+  .m-field input:focus { border-color: var(--rouge); }
+
+  .m-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  .m-pay-btn {
+    background: var(--rouge);
+    color: #fff;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin: 8px 0 4px;
+    cursor: pointer;
+  }
+  .m-secure { text-align: center; font-size: 9px; color: var(--texte-dim); padding-bottom: 10px; }
+
+  /* Mobile screen 3: Confirmation */
+  .m-confirm { padding: 30px 16px; text-align: center; }
+  .m-confirm-icon { font-size: 56px; margin-bottom: 16px; }
+  .m-confirm h2 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; margin-bottom: 8px; letter-spacing: 1px; }
+  .m-confirm p { font-size: 12px; color: var(--texte-dim); line-height: 1.6; margin-bottom: 20px; }
+  .m-confirm-detail {
+    background: var(--fond2);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: left;
+    margin-bottom: 16px;
+  }
+  .m-confirm-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--bord); }
+  .m-confirm-row:last-child { border: none; font-weight: 700; }
+  .m-share-btn {
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    color: var(--texte);
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  /* ========= TUNNEL FLOW DIAGRAM ========= */
+  .tunnel-section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .tunnel-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .tunnel-sub { text-align: center; color: var(--texte-dim); font-size: 13px; margin-bottom: 32px; }
+  .tunnel-flow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    background: var(--fond2);
+    border-radius: 16px;
+    border: 1px solid var(--bord);
+    overflow-x: auto;
+  }
+  .tf-step {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+  .tf-box {
+    background: var(--fond3);
+    border: 1px solid var(--bord);
+    border-radius: 10px;
+    padding: 16px 10px;
+    margin-bottom: 8px;
+  }
+  .tf-box.red-box { border-color: rgba(255,23,68,.4); background: rgba(255,23,68,.08); }
+  .tf-icon { font-size: 24px; margin-bottom: 6px; }
+  .tf-label { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .tf-desc { font-size: 10px; color: var(--texte-dim); line-height: 1.4; }
+  .tf-time {
+    font-size: 10px;
+    font-family: 'DM Mono', monospace;
+    color: var(--or);
+  }
+  .tf-arrow {
+    color: var(--rouge);
+    font-size: 24px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .ux-principles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
+  .uxp {
+    background: var(--fond2);
+    border: 1px solid var(--bord);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .uxp .uxp-icon { font-size: 28px; margin-bottom: 10px; }
+  .uxp h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .uxp p { font-size: 12px; color: var(--texte-dim); line-height: 1.5; }
+
+  @media (max-width: 700px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .vitrine-cards { grid-template-columns: 1fr; }
+    .tree-level { grid-template-columns: 1fr; }
+    .tree-sub { grid-template-columns: 1fr 1fr; }
+    .annotations { display: none; }
+    .mockup-wrapper { flex-direction: column; }
+    .ux-principles { grid-template-columns: 1fr; }
+    .phones-row { flex-direction: column; align-items: center; }
+    .tunnel-flow { flex-direction: column; }
+    .tf-arrow { transform: rotate(90deg); }
+  }
+</style>
 </head>
 <body>
 
-    <!-- Barre de Navigation Propre -->
-    <header>
-        <nav>
-            <div class="logo">⚡ Flash-Jour</div>
-            <div class="tagline">1 Produit, 1 Jour, Prix Imbattable</div>
-        </nav>
-    </header>
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab active" onclick="showTab('arbo')">① Arborescence</button>
+  <button class="tab" onclick="showTab('mockup')">② Homepage Mockup</button>
+  <button class="tab" onclick="showTab('mobile')">③ Mobile & Tunnel</button>
+</nav>
 
-    <!-- Zone de Vente Flash Principale -->
-    <main>
-        <div class="flash-box">
-            <div class="badge-timer">🔥 OFFRE DU JOUR UNIQUE — FIN DANS QUELQUES HEURES</div>
-            
-            <h1>La Vente Flash Du Jour</h1>
-            <p class="description">Chaque jour à minuit, découvrez un produit exceptionnel sélectionné pour vous, à un prix totalement imbattable. Stock ultra-limité.</p>
-            
-            <!-- Affichage du Prix Dynamique -->
-            <div class="price-section">
-                <span class="old-price">79,90 €</span>
-                <span class="new-price">29,99 €</span>
-                <span class="discount">-60% IMMÉDIAT</span>
+<!-- ===================== PANEL 1 : ARBORESCENCE ===================== -->
+<div id="arbo" class="panel active">
+  <div class="arbo">
+    <h1>Structure du Site</h1>
+    <p class="subtitle">Arborescence flash-jour.com · Architecture MVP</p>
+
+    <div class="tree">
+      <!-- Root -->
+      <div class="tree-root">
+        <div class="icon">🏠</div>
+        <div>
+          <h2>flash-jour.com</h2>
+          <p>Page d'accueil · Unique point d'entrée · 100% orientée conversion</p>
+        </div>
+      </div>
+
+      <!-- Level 1 -->
+      <div class="tree-level">
+        <div class="tree-card highlight">
+          <div class="card-icon">🔥</div>
+          <h3>Offre du Jour</h3>
+          <p>Page centrale. 1 produit, 1 prix, 1 CTA. Compte à rebours jusqu'à minuit. Tunnel 1 clic.</p>
+        </div>
+        <div class="tree-card" style="opacity:.6">
+          <div class="card-icon">⚡</div>
+          <h3>Offre du Mois</h3>
+          <p>Vitrine décorative en MVP. Produit vedette affiché, non activé en priorité.</p>
+          <div class="lock-icon">🔒</div>
+        </div>
+        <div class="tree-card" style="opacity:.6">
+          <div class="card-icon">👑</div>
+          <h3>Offre de l'An</h3>
+          <p>Produit premium aspirationnel. Crée la perception de gamme sans effort.</p>
+          <div class="lock-icon">🔒</div>
+        </div>
+      </div>
+
+      <!-- Level 2 -->
+      <div class="tree-sub">
+        <div class="tree-sub-card">
+          <div class="sub-label">Page Checkout</div>
+          <strong>Tunnel Rapide</strong>
+          <span>Adresse · Paiement · Confirmation. Max 2 étapes.</span>
+        </div>
+        <div class="tree-sub-card">
+          <div class="sub-label">Pages Légales</div>
+          <strong>CGV / Mentions</strong>
+          <span>Obligatoires. Générées automatiquement. Lien en footer.</span>
+        </div>
+        <div class="tree-sub-card">
+          <div class="sub-label">Mon Compte</div>
+          <strong>Espace Client</strong>
+          <span>Suivi commande. Natif WooCommerce. Lien discret en header.</span>
+        </div>
+        <div class="tree-sub-card">
+          <div class="sub-label">Page Erreur</div>
+          <strong>404 Malin</strong>
+          <span>Redirige vers l'offre du jour. Chaque visiteur doit voir le produit.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARCOURS UTILISATEUR -->
+    <div class="journey-title">Parcours Utilisateur Cible</div>
+    <div class="journey">
+      <div class="journey-step">
+        <div class="step-num">1</div>
+        <div class="step-label">Découverte</div>
+        <div class="step-detail">Réseaux sociaux, TikTok, email, bouche-à-oreille</div>
+        <div class="step-time">T+0s</div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">2</div>
+        <div class="step-label">Atterrissage</div>
+        <div class="step-detail">Page d'accueil. Produit + timer visibles en 0 scroll</div>
+        <div class="step-time">T+3s</div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">3</div>
+        <div class="step-label">Désir</div>
+        <div class="step-detail">Prix flash + stock limité + countdown = FOMO activé</div>
+        <div class="step-time">T+15s</div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">4</div>
+        <div class="step-label">Achat</div>
+        <div class="step-detail">Clic CTA → Checkout direct · Stripe/PayPal</div>
+        <div class="step-time">T+90s</div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">5</div>
+        <div class="step-label">Réassurance</div>
+        <div class="step-detail">Email confirmation instantané + suivi de commande</div>
+        <div class="step-time">T+2min</div>
+      </div>
+      <div class="journey-step">
+        <div class="step-num">6</div>
+        <div class="step-label">Rétention</div>
+        <div class="step-detail">Email "Offre de demain" → revient le lendemain</div>
+        <div class="step-time">J+1</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL 2 : HOMEPAGE MOCKUP ===================== -->
+<div id="mockup" class="panel">
+  <div class="mockup-wrapper">
+    <div class="desktop-preview">
+
+      <!-- Urgency Bar -->
+      <div class="urgency-bar">
+        <div class="dot"></div>
+        🔥 Offre active — expire dans <span id="ub-timer" style="font-family:'DM Mono',monospace; margin:0 4px">--h --m --s</span> — <strong>47 unités restantes</strong>
+      </div>
+
+      <!-- Header -->
+      <header class="site-header">
+        <div class="site-logo">FLASH<span>.</span>JOUR</div>
+        <div class="header-right">
+          <span class="header-nav">Offre du Mois ⚡</span>
+          <span class="header-nav">Offre de l'An 👑</span>
+          <span class="header-nav">Mon Compte</span>
+          <button class="cart-btn">🛒 Panier (0)</button>
+        </div>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-left">
+          <div class="badge-jour"><span class="fire">🔥</span> OFFRE DU JOUR · EXCLUSIF FLASH-JOUR</div>
+          <h1 class="hero-title">Mini<br><span class="accent">Projecteur</span><br>Pocket 4K</h1>
+          <p class="hero-desc">Projette jusqu'à 120" depuis la paume de ta main. Compatible iOS & Android. Batterie 3h autonome. Introuvable à ce prix ailleurs.</p>
+
+          <!-- Countdown -->
+          <div class="countdown-label">⏰ L'offre expire dans</div>
+          <div class="countdown">
+            <div class="cdown-unit">
+              <span class="cdown-num red" id="d-hours">08</span>
+              <span class="cdown-label-s">Heures</span>
             </div>
+            <div class="cdown-sep">:</div>
+            <div class="cdown-unit">
+              <span class="cdown-num" id="d-mins">34</span>
+              <span class="cdown-label-s">Minutes</span>
+            </div>
+            <div class="cdown-sep">:</div>
+            <div class="cdown-unit">
+              <span class="cdown-num" id="d-secs">17</span>
+              <span class="cdown-label-s">Secondes</span>
+            </div>
+          </div>
 
-            <!-- Bouton d'action connecté à ta plateforme -->
-            <a href="https://app.shiptothemoon.com" class="cta-action">Découvrir l'offre & Commander</a>
+          <!-- Price -->
+          <div class="price-block">
+            <div class="price-flash">49€</div>
+            <div class="price-old">129€</div>
+            <div class="price-badge">−62%</div>
+          </div>
+
+          <!-- Stock -->
+          <div class="stock-bar-wrap">
+            <div class="stock-label">
+              <span>Stock disponible</span>
+              <span class="alert">⚡ Il ne reste que 11 unités !</span>
+            </div>
+            <div class="stock-bar"><div class="stock-fill"></div></div>
+          </div>
+
+          <!-- CTA -->
+          <button class="cta-btn">⚡ ACHETER MAINTENANT — 49€</button>
+
+          <!-- Reassurance -->
+          <div class="reassurance">
+            <span class="reassurance-item"><span class="check">✓</span> Paiement sécurisé</span>
+            <span class="reassurance-item"><span class="check">✓</span> Livraison 5–8 jours</span>
+            <span class="reassurance-item"><span class="check">✓</span> Satisfait ou remboursé 14j</span>
+            <span class="reassurance-item"><span class="check">✓</span> Support 7j/7</span>
+          </div>
         </div>
-    </main>
 
-    <!-- Pied de page avec ton copyright.kit propre -->
-    <footer>
-        <div class="footer-content">
-            <p>&copy; 2026 Flash-Jour. Tous droits réservés. Propulsé sur infrastructure ultra-fluide.</p>
+        <div class="hero-right">
+          <div class="product-img-wrap">
+            <div class="product-placeholder">📽️</div>
+            <div class="social-proof-pop">
+              <div class="avatar-stack">
+                <div class="avatar">J</div>
+                <div class="avatar" style="background:#C2002F">M</div>
+                <div class="avatar" style="background:#555">A</div>
+              </div>
+              <div class="sp-text"><span class="sp-live">● 312 personnes</span> regardent cette offre en ce moment</div>
+            </div>
+          </div>
         </div>
-    </footer>
+      </section>
 
+      <!-- Vitrine -->
+      <div class="vitrine">
+        <div class="vitrine-inner">
+          <div class="vitrine-title">Découvrez aussi nos autres offres</div>
+          <div class="vitrine-cards">
+            <div class="vitrine-card active-card">
+              <div class="vc-label">🔥 Offre du Jour</div>
+              <h3>Mini Projecteur Pocket 4K</h3>
+              <p>49€ · Disponible maintenant</p>
+            </div>
+            <div class="vitrine-card">
+              <div class="vc-label">⚡ Offre du Mois</div>
+              <h3>???  Dévoilée le 1er du mois</h3>
+              <p>Abonne-toi pour être alerté</p>
+              <div class="lock-icon">🔒</div>
+            </div>
+            <div class="vitrine-card">
+              <div class="vc-label">👑 Offre de l'An</div>
+              <h3>???  Un produit d'exception</h3>
+              <p>Pour les membres VIP uniquement</p>
+              <div class="lock-icon">🔒</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <span>© 2025 Flash-Jour · Tous droits réservés</span>
+        <span style="display:flex;gap:20px">
+          <a href="#" style="color:var(--texte-dim);text-decoration:none">CGV</a>
+          <a href="#" style="color:var(--texte-dim);text-decoration:none">Mentions légales</a>
+          <a href="#" style="color:var(--texte-dim);text-decoration:none">Contact</a>
+          <a href="#" style="color:var(--texte-dim);text-decoration:none">Politique de confidentialité</a>
+        </span>
+      </footer>
+    </div>
+
+    <!-- ANNOTATIONS -->
+    <div class="annotations">
+      <h3>Annotations Design</h3>
+
+      <div class="annot">
+        <span class="annot-num">1</span>
+        <h4>Barre d'urgence persistante</h4>
+        <p>Sticky en haut, toujours visible. Timer + unités restantes. Rouge = danger = agir maintenant.</p>
+        <span class="plugin-tag">WP Widget / PHP natif</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">2</span>
+        <h4>Compte à rebours central</h4>
+        <p>Deadline fixée à minuit pile. Réinitialisation automatique via n8n. Le levier FOMO le plus puissant.</p>
+        <span class="plugin-tag">Countdown Timer Ultimate</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">3</span>
+        <h4>Ancrage de prix fort</h4>
+        <p>Prix barré en gros + badge % d'économie rouge. Percetion de valeur x3 avant même de lire le produit.</p>
+        <span class="plugin-tag">WooCommerce Natif</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">4</span>
+        <h4>Barre de stock critique</h4>
+        <p>"Il ne reste que 11 unités" avec barre quasi-vide. Psychologie de la rareté. Déclenche l'urgence physique.</p>
+        <span class="plugin-tag">WooCommerce Stock Natif</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">5</span>
+        <h4>Preuve sociale en temps réel</h4>
+        <p>Pop-up "312 personnes regardent". Validation sociale = frein à la méfiance. Clé pour un site inconnu.</p>
+        <span class="plugin-tag">Sales Popup Free</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">6</span>
+        <h4>CTA unique et dominant</h4>
+        <p>Un seul bouton d'action, rouge vif, pleine largeur. Pas de distraction. Le texte inclut le prix : pas de surprise.</p>
+        <span class="plugin-tag">Direct Checkout WooCommerce</span>
+      </div>
+
+      <div class="annot">
+        <span class="annot-num">7</span>
+        <h4>Vitrine offres en footer</h4>
+        <p>Offres Mois/An vérouillées = aspirationnel. Crée la profondeur sans complexité. Incite à revenir.</p>
+        <span class="plugin-tag">WooCommerce Catégories</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL 3 : MOBILE + TUNNEL ===================== -->
+<div id="mobile" class="panel">
+  <div class="mobile-panel">
+    <h1>Mobile & Tunnel d'Achat</h1>
+    <p class="subtitle">Design mobile-first · Tunnel 2 étapes max · Abandon réduit au minimum</p>
+
+    <!-- 3 PHONES -->
+    <div class="phones-row">
+
+      <!-- Phone 1: Homepage Mobile -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-content">
+            <div class="m-urgency">🔥 Expire dans <span id="m-timer" style="font-family:'DM Mono',monospace">--h--m</span> · 11 unités restantes</div>
+            <div class="m-header">
+              <div class="m-logo">FLASH<span>.</span>JOUR</div>
+              <span class="m-cart-icon">🛒</span>
+            </div>
+            <div class="m-hero">
+              <div class="m-badge">🔥 Offre du Jour · Exclusif</div>
+              <div class="m-product-img">📽️</div>
+              <h2 class="m-title">Mini Projecteur<br>Pocket 4K</h2>
+              <div class="m-countdown">
+                <div class="m-cunit">
+                  <span class="m-cnum" id="mh">08</span>
+                  <span class="m-clabel">H</span>
+                </div>
+                <div class="m-cunit">
+                  <span class="m-cnum" id="mm">34</span>
+                  <span class="m-clabel">M</span>
+                </div>
+                <div class="m-cunit">
+                  <span class="m-cnum" id="ms">17</span>
+                  <span class="m-clabel">S</span>
+                </div>
+              </div>
+              <div class="m-price-row">
+                <span class="m-price">49€</span>
+                <span class="m-price-old">129€</span>
+                <span class="m-savings">−62%</span>
+              </div>
+              <div class="m-stock">
+                <div class="m-stock-text">⚡ Seulement 11 unités restantes</div>
+                <div class="m-bar"><div class="m-bar-fill"></div></div>
+              </div>
+              <button class="m-cta">⚡ ACHETER — 49€</button>
+              <div class="m-reassure">
+                <span>✅ Paiement sécurisé</span>
+                <span>📦 Livraison 5–8j</span>
+                <span>↩️ 14j remboursé</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label">Écran 1 — Accueil</div>
+      </div>
+
+      <!-- Phone 2: Checkout -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-content m-checkout">
+            <div class="m-checkout-header">
+              <span class="m-back">←</span>
+              <span class="m-checkout-title">Finaliser ma commande</span>
+            </div>
+            <div class="m-steps">
+              <div class="m-step done"></div>
+              <div class="m-step done"></div>
+              <div class="m-step"></div>
+            </div>
+            <div class="m-order-recap">
+              <span class="m-order-img">📽️</span>
+              <div class="m-order-info">
+                <h4>Mini Projecteur Pocket 4K</h4>
+                <p>Qté : 1 · Expédié sous 24h</p>
+              </div>
+              <span class="m-order-price">49€</span>
+            </div>
+            <div class="m-form">
+              <div class="m-field">
+                <label>Email</label>
+                <input type="email" placeholder="ton@email.com" value="jean.d@gmail.com">
+              </div>
+              <div class="m-field-row">
+                <div class="m-field">
+                  <label>Prénom</label>
+                  <input type="text" placeholder="Prénom" value="Jean">
+                </div>
+                <div class="m-field">
+                  <label>Nom</label>
+                  <input type="text" placeholder="Nom" value="Dupont">
+                </div>
+              </div>
+              <div class="m-field">
+                <label>Adresse</label>
+                <input type="text" placeholder="12 rue de la Paix" value="12 rue de la Paix">
+              </div>
+              <div class="m-field-row">
+                <div class="m-field">
+                  <label>Code Postal</label>
+                  <input type="text" placeholder="75001" value="75001">
+                </div>
+                <div class="m-field">
+                  <label>Ville</label>
+                  <input type="text" placeholder="Paris" value="Paris">
+                </div>
+              </div>
+              <button class="m-pay-btn">🔒 PAYER 49€ EN SÉCURITÉ</button>
+              <div class="m-secure">🔒 Paiement crypté SSL · Stripe & PayPal acceptés</div>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label">Écran 2 — Checkout</div>
+      </div>
+
+      <!-- Phone 3: Confirmation -->
+      <div>
+        <div class="phone-frame">
+          <div class="phone-content">
+            <div class="m-confirm">
+              <div class="m-confirm-icon">🎉</div>
+              <h2>Commande Confirmée !</h2>
+              <p>Merci Jean ! Ta commande est en cours de traitement. Tu recevras un email de confirmation sur jean.d@gmail.com</p>
+              <div class="m-confirm-detail">
+                <div class="m-confirm-row">
+                  <span>Mini Projecteur Pocket 4K</span>
+                  <span>49€</span>
+                </div>
+                <div class="m-confirm-row">
+                  <span>Livraison estimée</span>
+                  <span>5–8 jours</span>
+                </div>
+                <div class="m-confirm-row">
+                  <span style="color:var(--or)">Vous avez économisé</span>
+                  <span style="color:var(--or)">80€ 🎉</span>
+                </div>
+              </div>
+              <button class="m-share-btn">📢 Partager cette offre avec un ami</button>
+            </div>
+          </div>
+        </div>
+        <div class="phone-label">Écran 3 — Confirmation</div>
+      </div>
+    </div>
+
+    <!-- TUNNEL FLOW -->
+    <div class="tunnel-section">
+      <div class="tunnel-title">Tunnel d'Achat en 2 Étapes</div>
+      <div class="tunnel-sub">De l'atterrissage à la confirmation · Objectif : moins de 3 minutes</div>
+      <div class="tunnel-flow">
+        <div class="tf-step">
+          <div class="tf-box red-box">
+            <div class="tf-icon">🏠</div>
+            <div class="tf-label">Page d'Accueil</div>
+            <div class="tf-desc">Produit + Timer + Prix + CTA</div>
+          </div>
+          <div class="tf-time">T+0s</div>
+        </div>
+        <div class="tf-arrow">→</div>
+        <div class="tf-step">
+          <div class="tf-box red-box">
+            <div class="tf-icon">⚡</div>
+            <div class="tf-label">Clic CTA</div>
+            <div class="tf-desc">Direct Checkout — bypass panier</div>
+          </div>
+          <div class="tf-time">T+15s</div>
+        </div>
+        <div class="tf-arrow">→</div>
+        <div class="tf-step">
+          <div class="tf-box">
+            <div class="tf-icon">📝</div>
+            <div class="tf-label">Infos Livraison</div>
+            <div class="tf-desc">Nom · Email · Adresse</div>
+          </div>
+          <div class="tf-time">T+60s</div>
+        </div>
+        <div class="tf-arrow">→</div>
+        <div class="tf-step">
+          <div class="tf-box">
+            <div class="tf-icon">💳</div>
+            <div class="tf-label">Paiement</div>
+            <div class="tf-desc">Stripe · PayPal · Apple Pay</div>
+          </div>
+          <div class="tf-time">T+90s</div>
+        </div>
+        <div class="tf-arrow">→</div>
+        <div class="tf-step">
+          <div class="tf-box">
+            <div class="tf-icon">✅</div>
+            <div class="tf-label">Confirmation</div>
+            <div class="tf-desc">Email + Partage social</div>
+          </div>
+          <div class="tf-time">T+2min</div>
+        </div>
+        <div class="tf-arrow">→</div>
+        <div class="tf-step">
+          <div class="tf-box">
+            <div class="tf-icon">🤖</div>
+            <div class="tf-label">n8n s'active</div>
+            <div class="tf-desc">Email fournisseur + Statut mis à jour</div>
+          </div>
+          <div class="tf-time">T+2min</div>
+        </div>
+      </div>
+
+      <!-- UX Principles -->
+      <div class="ux-principles">
+        <div class="uxp">
+          <div class="uxp-icon">📱</div>
+          <h4>Mobile-First Absolu</h4>
+          <p>80%+ des achats impulsifs viennent du mobile. Chaque pixel est conçu pour le pouce. Pas de zoom requis, CTA toujours visible, formulaire autocomplete activé.</p>
+        </div>
+        <div class="uxp">
+          <div class="uxp-icon">⚡</div>
+          <h4>Friction Zéro</h4>
+          <p>Le plugin "Direct Checkout" supprime l'étape panier. Un clic sur "Acheter" = directement sur le checkout. Chaque étape supprimée = +15% de conversion.</p>
+        </div>
+        <div class="uxp">
+          <div class="uxp-icon">🔴</div>
+          <h4>Hiérarchie Visuelle Nette</h4>
+          <p>Une seule couleur dominante (rouge), un seul CTA, une seule action possible. Le visiteur ne doit jamais se demander quoi faire. L'urgence est visible dès 0 scroll.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab navigation
+  function showTab(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Live countdown to midnight
+  function updateCountdown() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24,0,0,0);
+    const diff = Math.max(0, midnight - now);
+    const h = String(Math.floor(diff / 3600000)).padStart(2,'0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+
+    // Desktop
+    const dh = document.getElementById('d-hours');
+    const dm = document.getElementById('d-mins');
+    const ds = document.getElementById('d-secs');
+    if(dh) dh.textContent = h;
+    if(dm) dm.textContent = m;
+    if(ds) ds.textContent = s;
+
+    // Mobile
+    const mh = document.getElementById('mh');
+    const mmEl = document.getElementById('mm');
+    const msEl = document.getElementById('ms');
+    if(mh) mh.textContent = h;
+    if(mmEl) mmEl.textContent = m;
+    if(msEl) msEl.textContent = s;
+
+    // Urgency bars
+    const ub = document.getElementById('ub-timer');
+    const mt = document.getElementById('m-timer');
+    if(ub) ub.textContent = `${h}h ${m}m ${s}s`;
+    if(mt) mt.textContent = `${h}h${m}m`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
