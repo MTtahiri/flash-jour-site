@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash-Jour — Paiement Sécurisé</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --rouge: #FF1744; --fond: #080808; --fond2: #111111; --texte: #F5F5F0; --texte-dim: #888; --bord: rgba(255,255,255,0.08); --vert: #00E676; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: var(--fond); color: var(--texte); font-family: 'DM Sans', sans-serif; padding-bottom: 40px; }
+        .site-header { border-bottom: 1px solid var(--bord); padding: 16px 5%; display: flex; align-items: center; justify-content: space-between; }
+        .site-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--texte); text-decoration: none; }
+        .site-logo span { color: var(--rouge); }
+        .tunnel-wrap { max-width: 500px; margin: 40px auto; padding: 0 20px; }
+        .step-indicator { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--vert); margin-bottom: 10px; font-weight: 700; }
+        h1 { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 1px; margin-bottom: 24px; }
+        .form-card { background: var(--fond2); border: 1px solid var(--bord); border-radius: 12px; padding: 28px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 12px; font-weight: 500; color: var(--texte-dim); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+        input { width: 100%; background: #000; border: 1px solid var(--bord); padding: 14px; border-radius: 8px; color: #fff; font-size: 14px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .secure-badge { background: rgba(0,230,118,0.08); border: 1px solid rgba(0,230,118,0.2); color: var(--vert); padding: 12px; border-radius: 8px; font-size: 12px; text-align: center; margin-bottom: 20px; font-weight: 500; }
+        .cta-btn { display: block; text-align: center; width: 100%; background: var(--vert); color: #000; border: none; padding: 16px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1.5px; cursor: pointer; text-decoration: none; margin-top: 10px; font-weight: 700; }
+    </style>
+</head>
+<body>
+    <header class="site-header"><a href="index.html" class="site-logo">FLASH<span>.</span>JOUR</a></header>
+    <div class="tunnel-wrap">
+        <div class="step-indicator">🔒 Étape 2 sur 2</div>
+        <h1>Paiement par carte</h1>
+        <div class="form-card">
+            <div class="secure-badge">🔒 Connexion cryptée SSL 256-bits</div>
+            <form onsubmit="alert('Félicitations ! Commande enregistrée.'); return false;">
+                <div class="form-group"><label>Numéro de carte</label><input type="text" placeholder="4532 •••• •••• ••••" required></div>
+                <div class="row">
+                    <div class="form-group"><label>Expiration</label><input type="text" placeholder="MM/AA" required></div>
+                    <div class="form-group"><label>Code CVC</label><input type="text" placeholder="123" required></div>
+                </div>
+                <button type="submit" class="cta-btn">Valider le paiement — 49,00 €</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

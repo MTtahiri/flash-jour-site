@@ -6,386 +6,98 @@
     <title>Flash-Jour — Ventes Flash : 1 Produit, 1 Jour, Prix Imbattable</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=DM+Mono&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --rouge: #FF1744;
-            --rouge-sombre: #C2002F;
-            --fond: #080808;
-            --fond2: #111111;
-            --fond3: #1a1a1a;
-            --texte: #F5F5F0;
-            --texte-dim: #888;
-            --vert: #00E676;
-            --bord: rgba(255,255,255,0.08);
-        }
-
+        :root { --rouge: #FF1744; --rouge-sombre: #C2002F; --fond: #080808; --fond2: #111111; --fond3: #1a1a1a; --texte: #F5F5F0; --texte-dim: #888; --vert: #00E676; --bord: rgba(255,255,255,0.08); }
         * { margin:0; padding:0; box-sizing:border-box; }
-
-        body {
-            background: var(--fond);
-            color: var(--texte);
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* URGENCY BAR */
-        .urgency-bar {
-            background: var(--rouge);
-            padding: 10px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: .5px;
-            color: #fff;
-        }
-        .urgency-bar .dot {
-            width: 8px; height: 8px;
-            background: #fff;
-            border-radius: 50%;
-            animation: pulse 1.2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: .4; transform: scale(.7); }
-        }
-
-        /* HEADER */
-        .site-header {
-            background: rgba(8,8,8,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--bord);
-            padding: 16px 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .site-logo {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px;
-            letter-spacing: 3px;
-            color: var(--texte);
-            text-decoration: none;
-        }
+        body { background: var(--fond); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+        .urgency-bar { background: var(--rouge); padding: 10px 24px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 13px; font-weight: 600; color: #fff; }
+        .urgency-bar .dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.7); } }
+        .site-header { background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--bord); padding: 16px 5%; display: flex; align-items: center; justify-content: space-between; }
+        .site-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--texte); text-decoration: none; }
         .site-logo span { color: var(--rouge); }
-        
-        .header-tagline {
-            font-size: 12px;
-            color: var(--texte-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* MAIN HERO PRODUCT */
-        .hero {
-            padding: 60px 5%;
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: center;
-            flex: 1;
-        }
-
-        .badge-jour {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,23,68,.12);
-            border: 1px solid rgba(255,23,68,.3);
-            color: var(--rouge);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .hero-title {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 56px;
-            line-height: 1.05;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
+        .header-tagline { font-size: 12px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .hero { padding: 60px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; flex: 1; }
+        .badge-jour { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,23,68,.12); border: 1px solid rgba(255,23,68,.3); color: var(--rouge); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1.05; letter-spacing: 1px; margin-bottom: 16px; }
         .hero-title .accent { color: var(--rouge); }
-
-        .hero-desc {
-            font-size: 15px;
-            color: var(--texte-dim);
-            line-height: 1.7;
-            margin-bottom: 28px;
-        }
-
-        /* PRICE */
-        .price-block {
-            display: flex;
-            align-items: baseline;
-            gap: 14px;
-            margin-bottom: 24px;
-        }
-        .price-flash {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 56px;
-            color: var(--texte);
-            line-height: 1;
-        }
-        .price-old {
-            font-size: 22px;
-            color: var(--texte-dim);
-            text-decoration: line-through;
-        }
-        .price-badge {
-            background: var(--rouge);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-        }
-
-        /* COUNTDOWN */
-        .countdown-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--texte-dim);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .countdown {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 28px;
-        }
-        .cdown-unit {
-            background: var(--fond2);
-            border: 1px solid var(--bord);
-            border-radius: 8px;
-            padding: 12px 16px;
-            text-align: center;
-            min-width: 66px;
-        }
-        .cdown-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 36px;
-            color: var(--texte);
-            line-height: 1;
-            display: block;
-        }
+        .hero-desc { font-size: 15px; color: var(--texte-dim); line-height: 1.7; margin-bottom: 28px; }
+        .price-block { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; }
+        .price-flash { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--texte); line-height: 1; }
+        .price-old { font-size: 22px; color: var(--texte-dim); text-decoration: line-through; }
+        .price-badge { background: var(--rouge); color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+        .countdown-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--texte-dim); margin-bottom: 10px; font-weight: 600; }
+        .countdown { display: flex; gap: 8px; margin-bottom: 28px; }
+        .cdown-unit { background: var(--fond2); border: 1px solid var(--bord); border-radius: 8px; padding: 12px 16px; text-align: center; min-width: 66px; }
+        .cdown-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--texte); line-height: 1; display: block; }
         .cdown-num.red { color: var(--rouge); }
-        .cdown-label-s {
-            font-size: 10px;
-            color: var(--texte-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 4px;
-            display: block;
-        }
-        .cdown-sep {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 36px;
-            color: var(--rouge);
-            align-self: center;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-        /* STOCK BAR */
+        .cdown-label-s { font-size: 10px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; display: block; }
+        .cdown-sep { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--rouge); align-self: center; }
         .stock-bar-wrap { margin-bottom: 24px; }
-        .stock-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
+        .stock-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; }
         .stock-label .alert { color: var(--rouge); font-weight: 700; }
-        .stock-bar {
-            background: var(--fond3);
-            border-radius: 4px;
-            height: 6px;
-            overflow: hidden;
-          }
-        .stock-fill {
-            background: linear-gradient(90deg, var(--rouge-sombre), var(--rouge));
-            height: 100%;
-            width: 23%;
-            border-radius: 4px;
-        }
-
-        /* CTA BUTTON */
-        .cta-btn {
-            display: block;
-            text-align: center;
-            width: 100%;
-            background: var(--rouge);
-            color: #fff;
-            border: none;
-            padding: 18px 32px;
-            border-radius: 10px;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 24px;
-            letter-spacing: 2px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all .2s;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 24px rgba(255,23,68,.2);
-        }
+        .stock-bar { background: var(--fond3); border-radius: 4px; height: 6px; overflow: hidden; }
+        .stock-fill { background: linear-gradient(90deg, var(--rouge-sombre), var(--rouge)); height: 100%; width: 23%; border-radius: 4px; }
+        
+        /* LIEN VERS TA PAGE COMMANDE */
+        .cta-btn { display: block; text-align: center; width: 100%; background: var(--rouge); color: #fff; border: none; padding: 18px 32px; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; cursor: pointer; text-decoration: none; transition: all .2s; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(255,23,68,.2); }
         .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,23,68,.4); }
-
-        .reassurance {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .reassurance-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--texte-dim);
-        }
+        
+        .reassurance { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .reassurance-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--texte-dim); }
         .reassurance-item .check { color: var(--vert); }
-
-        /* HERO RIGHT (IMAGE) */
         .hero-right { position: relative; }
-        .product-img-wrap {
-            background: var(--fond2);
-            border: 1px solid var(--bord);
-            border-radius: 16px;
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .product-placeholder {
-            font-size: 120px;
-            animation: float 4s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}
-        }
-
-        /* FOOTER */
-        .site-footer {
-            border-top: 1px solid var(--bord);
-            padding: 24px 5%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--texte-dim);
-            background: var(--fond2);
-            margin-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .hero { grid-template-columns: 1fr; padding: 40px 24px; }
-            .hero-title { font-size: 42px; }
-            .product-img-wrap { aspect-ratio: 1.2; }
-            .product-placeholder { font-size: 80px; }
-        }
+        .product-img-wrap { background: var(--fond2); border: 1px solid var(--bord); border-radius: 16px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-placeholder { font-size: 120px; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        .site-footer { border-top: 1px solid var(--bord); padding: 24px 5%; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--texte-dim); background: var(--fond2); margin-top: 40px; }
+        @media (max-width: 768px) { .hero { grid-template-columns: 1fr; padding: 40px 24px; } .hero-title { font-size: 42px; } .product-img-wrap { aspect-ratio: 1.2; } }
     </style>
 </head>
 <body>
-
-    <div class="urgency-bar">
-        <div class="dot"></div>
-        🔥 OFFRE ACTIVE — EXPIRE DANS <span id="ub-timer" style="font-family:'DM Mono',monospace; color: #fff;">--h --m --s</span> — LUXE & HAUTE PERFORMANCE
-    </div>
-
+    <div class="urgency-bar"><div class="dot"></div>🔥 OFFRE DU JOUR UNIQUE — DISPONIBLE 24H SEULEMENT</div>
     <header class="site-header">
-        <a href="#" class="site-logo">FLASH<span>.</span>JOUR</a>
+        <a href="index.html" class="site-logo">FLASH<span>.</span>JOUR</a>
         <div class="header-tagline">1 Produit, 1 Jour, Prix Imbattable</div>
     </header>
-
     <main class="hero">
         <div class="hero-left">
-            <div class="badge-jour">🔥 OFFRE DU GAGNANT · STOCK LIMITÉ</div>
+            <div class="badge-jour">🔴 EN DIRECT EN CE MOMENT</div>
             <h1 class="hero-title">Mini <span class="accent">Projecteur</span> Pocket 4K</h1>
-            <p class="hero-desc">Projette instantanément jusqu'à 120 pouces depuis la paume de votre main. Entièrement compatible avec votre smartphone iOS & Android. Batterie intégrée offrant 3 heures d'autonomie complète pour vos sessions business ou cinéma.</p>
-
+            <p class="hero-desc">Projette instantanément jusqu'à 120 pouces depuis la paume de votre main. Batterie intégrée offrant 3 heures d'autonomie complète pour vos sessions business ou cinéma.</p>
             <div class="countdown-label">⏰ Fin de l'offre imminente :</div>
             <div class="countdown">
-                <div class="cdown-unit">
-                    <span class="cdown-num red" id="d-hours">00</span>
-                    <span class="cdown-label-s">Heures</span>
-                </div>
+                <div class="cdown-unit"><span class="cdown-num red" id="d-hours">00</span><span class="cdown-label-s">Heures</span></div>
                 <div class="cdown-sep">:</div>
-                <div class="cdown-unit">
-                    <span class="cdown-num" id="d-mins">00</span>
-                    <span class="cdown-label-s">Minutes</span>
-                </div>
+                <div class="cdown-unit"><span class="cdown-num" id="d-mins">00</span><span class="cdown-label-s">Minutes</span></div>
                 <div class="cdown-sep">:</div>
-                <div class="cdown-unit">
-                    <span class="cdown-num" id="d-secs">00</span>
-                    <span class="cdown-label-s">Secondes</span>
-                </div>
+                <div class="cdown-unit"><span class="cdown-num" id="d-secs">00</span><span class="cdown-label-s">Secondes</span></div>
             </div>
-
             <div class="price-block">
                 <div class="price-flash">49€</div>
                 <div class="price-old">129€</div>
                 <div class="price-badge">−62% IMMÉDIAT</div>
             </div>
-
             <div class="stock-bar-wrap">
-                <div class="stock-label">
-                    <span>Vitesse de commande</span>
-                    <span class="alert">⚡ Dernières unités disponibles !</span>
-                </div>
+                <div class="stock-label"><span>Vitesse de commande</span><span class="alert">⚡ Dernières unités !</span></div>
                 <div class="stock-bar"><div class="stock-fill"></div></div>
             </div>
-
-            <a href="https://app.shiptothemoon.com" class="cta-btn">⚡ PROFITER DE L'OFFRE FLASH — 49€</a>
-
+            
+            <a href="commande.html" class="cta-btn">⚡ PROFITER DE L'OFFRE FLASH — 49€</a>
+            
             <div class="reassurance">
                 <span class="reassurance-item"><span class="check">✓</span> Paiement sécurisé SSL</span>
-                <span class="reassurance-item"><span class="check">✓</span> Logistique ShipToTheMoon</span>
-                <span class="reassurance-item"><span class="check">✓</span> Garantie Satisfaction 14j</span>
+                <span class="reassurance-item"><span class="check">✓</span> Expédition Express</span>
             </div>
         </div>
-
-        <div class="hero-right">
-            <div class="product-img-wrap">
-                <div class="product-placeholder">📽️</div>
-            </div>
-        </div>
+        <div class="hero-right"><div class="product-img-wrap"><div class="product-placeholder">📽️</div></div></div>
     </main>
-
-    <footer class="site-footer">
-        <span>© 2026 Flash-Jour · Tous droits réservés</span>
-        <span>Infrastructure Fluide Vercel</span>
-    </footer>
-
+    <footer class="site-footer"><span>© 2026 Flash-Jour</span><span>Infrastructure Ultra-Fluide</span></footer>
     <script>
-        // Compte à rebours dynamique jusqu'à minuit
         function updateCountdown() {
-            const now = new Date();
-            const midnight = new Date(now);
-            midnight.setHours(24,0,0,0);
-            const diff = Math.max(0, midnight - now);
-            const h = String(Math.floor(diff / 3600000)).padStart(2,'0');
-            const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0');
-            const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
-
-            document.getElementById('d-hours').textContent = h;
-            document.getElementById('d-mins').textContent = m;
-            document.getElementById('d-secs').textContent = s;
-            document.getElementById('ub-timer').textContent = `${h}h ${m}m ${s}s`;
-        }
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+            const now = new Date(); const midnight = new Date(now); midnight.setHours(24,0,0,0); const diff = Math.max(0, midnight - now);
+            const h = String(Math.floor(diff / 3600000)).padStart(2,'0'); const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0'); const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+            document.getElementById('d-hours').textContent = h; document.getElementById('d-mins').textContent = m; document.getElementById('d-secs').textContent = s;
+        } updateCountdown(); setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
