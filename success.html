@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash-Jour — Commande confirmée !</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rouge:#e63946;--fond:#0a0a0a;--surface:#111;--surface2:#1a1a1a;
+  --bord:#2a2a2a;--texte:#f0f0f0;--texte-dim:#888;--succes:#2ecc71;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+.header{border-bottom:1px solid var(--bord);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--texte);text-decoration:none}
+.logo span{color:var(--rouge)}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px}
+.card{
+  background:var(--surface);border:1px solid var(--bord);border-radius:16px;
+  padding:48px 40px;max-width:520px;width:100%;text-align:center;
+}
+@media(max-width:480px){.card{padding:32px 20px}}
+
+/* CHECKMARK ANIMÉ */
+.check-wrap{
+  width:80px;height:80px;border-radius:50%;background:rgba(46,204,113,.12);
+  border:2px solid var(--succes);margin:0 auto 28px;display:flex;align-items:center;justify-content:center;
+  animation:pop .5s cubic-bezier(.175,.885,.32,1.275) both;
+}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.check-wrap svg{animation:draw .6s .3s ease both}
+@keyframes draw{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+
+.titre{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:.04em;margin-bottom:10px;color:var(--succes)}
+.sous-titre{font-size:15px;color:var(--texte-dim);margin-bottom:32px}
+
+/* INFOS COMMANDE */
+.infos{background:var(--surface2);border-radius:10px;padding:20px;margin-bottom:28px;text-align:left}
+.info-line{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;font-size:14px;border-bottom:1px solid var(--bord)}
+.info-line:last-child{border-bottom:none}
+.info-key{color:var(--texte-dim);font-size:13px}
+.info-val{text-align:right;max-width:260px}
+.commande-num{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--rouge);letter-spacing:.04em}
+
+/* STEPS LIVRAISON */
+.steps{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;text-align:left}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-icon{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;
+}
+.step-icon.done{background:rgba(46,204,113,.15);color:var(--succes)}
+.step-icon.soon{background:rgba(230,57,70,.12);color:var(--rouge)}
+.step-icon.wait{background:var(--surface2);color:var(--texte-dim)}
+.step-content .step-titre{font-size:13px;font-weight:600;margin-bottom:2px}
+.step-content .step-desc{font-size:12px;color:var(--texte-dim)}
+
+/* BTN */
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--rouge);color:#fff;border:none;border-radius:8px;
+  padding:13px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;text-decoration:none;transition:background .18s;
+}
+.btn:hover{background:#c82333}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;margin-top:12px;
+  color:var(--texte-dim);font-size:13px;text-decoration:none;
+  border:1px solid var(--bord);border-radius:8px;padding:10px 20px;transition:border-color .18s;
+}
+.btn-ghost:hover{border-color:var(--texte-dim)}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="/" class="logo">FLASH<span>.</span>JOUR</a>
+</header>
+
+<main class="main">
+  <div class="card">
+    <!-- Checkmark -->
+    <div class="check-wrap">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--succes)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:60">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <div class="titre">Commande confirmée !</div>
+    <div class="sous-titre">Merci pour votre achat — un email de confirmation vous a été envoyé</div>
+
+    <!-- Infos commande -->
+    <div class="infos">
+      <div class="info-line">
+        <span class="info-key">Numéro de commande</span>
+        <span class="info-val commande-num" id="num-commande">FJ-#######</span>
+      </div>
+      <div class="info-line">
+        <span class="info-key">Produit</span>
+        <span class="info-val" id="info-produit">Mini Projecteur Pocket 4K</span>
+      </div>
+      <div class="info-line">
+        <span class="info-key">Email de confirmation</span>
+        <span class="info-val" id="info-email">—</span>
+      </div>
+      <div class="info-line">
+        <span class="info-key">Livraison estimée</span>
+        <span class="info-val" id="info-livraison">—</span>
+      </div>
+    </div>
+
+    <!-- Étapes livraison -->
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon done">✓</div>
+        <div class="step-content">
+          <div class="step-titre">Commande enregistrée</div>
+          <div class="step-desc">Votre paiement a été validé</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon soon">⚡</div>
+        <div class="step-content">
+          <div class="step-titre">Préparation en cours</div>
+          <div class="step-desc">Votre colis est en cours de préparation sous 24-48h</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon wait">📦</div>
+        <div class="step-content">
+          <div class="step-titre">Expédition</div>
+          <div class="step-desc">Vous recevrez un email avec le numéro de suivi</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon wait">🏠</div>
+        <div class="step-content">
+          <div class="step-titre">Livraison à domicile</div>
+          <div class="step-desc">Délai estimé : 5 à 12 jours ouvrables</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <a href="/" class="btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Retour à Flash-Jour
+    </a>
+    <br>
+    <a href="/" class="btn-ghost" id="btn-suivi" style="display:none">
+      Suivre ma commande
+    </a>
+  </div>
+</main>
+
+<footer style="text-align:center;padding:20px;font-size:12px;color:var(--texte-dim);border-top:1px solid var(--bord)">
+  <a href="/cgv.html" style="color:var(--texte-dim)">CGV</a> ·
+  <a href="/mentions-legales.html" style="color:var(--texte-dim)">Mentions légales</a>
+</footer>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const paypalId = params.get('paypal_order');
+  const email = params.get('email');
+
+  // Numéro de commande
+  const orderId = sessionId || paypalId || '';
+  if (orderId) {
+    const short = 'FJ-' + orderId.slice(-8).toUpperCase();
+    document.getElementById('num-commande').textContent = short;
+  }
+
+  // Email
+  if (email) {
+    document.getElementById('info-email').textContent = decodeURIComponent(email);
+  }
+
+  // Produit depuis sessionStorage ou localStorage
+  const prodNom = sessionStorage.getItem('fj_product') || 'Mini Projecteur Pocket 4K';
+  document.getElementById('info-produit').textContent = prodNom;
+
+  // Date livraison estimée (+12 jours ouvrables)
+  function addJoursOuvrables(date, jours) {
+    let d = new Date(date); let added = 0;
+    while (added < jours) {
+      d.setDate(d.getDate() + 1);
+      const j = d.getDay();
+      if (j !== 0 && j !== 6) added++;
+    }
+    return d;
+  }
+  const livMin = addJoursOuvrables(new Date(), 5);
+  const livMax = addJoursOuvrables(new Date(), 12);
+  const opts = {day:'numeric', month:'long'};
+  const locale = 'fr-FR';
+  document.getElementById('info-livraison').textContent =
+    'Entre le ' + livMin.toLocaleDateString(locale, opts) + ' et le ' + livMax.toLocaleDateString(locale, opts);
+
+  // Charger infos produit depuis n8n si dispo
+  fetch('https://smconsulting.app.n8n.cloud/webhook/produit-du-jour')
+    .then(r => r.json())
+    .then(p => { if (p.nom) document.getElementById('info-produit').textContent = p.nom; })
+    .catch(() => {});
+})();
+</script>
+</body>
+</html>
