@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flash-Jour — TEST Paiement 0,01€</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--rouge:#e63946;--fond:#0a0a0a;--surface:#111;--bord:#2a2a2a;--texte:#f0f0f0;--texte-dim:#999}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:var(--surface);border:2px solid #f59e0b;border-radius:14px;padding:36px;max-width:480px;width:100%}
+.badge{background:#f59e0b;color:#000;font-size:11px;font-weight:700;padding:4px 12px;border-radius:2px;letter-spacing:.08em;display:inline-block;margin-bottom:20px}
+h1{font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:8px}
+.desc{color:var(--texte-dim);font-size:14px;margin-bottom:28px}
+.test-card{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:16px;margin-bottom:24px;font-size:13px}
+.test-card p{margin-bottom:6px;color:var(--texte-dim)}
+.test-card strong{color:#f59e0b;font-family:monospace;font-size:14px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:12px;font-weight:600;color:var(--texte-dim);text-transform:uppercase;letter-spacing:.06em}
+.field input{background:#1a1a1a;border:1.5px solid var(--bord);border-radius:7px;padding:11px 14px;color:var(--texte);font-family:'DM Sans',sans-serif;font-size:14px;outline:none}
+.field input:focus{border-color:var(--rouge)}
+.btn{width:100%;background:var(--rouge);color:#fff;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.btn:hover{background:#c82333}
+.spinner-wrap{display:none;flex-direction:column;align-items:center;gap:12px;padding:20px}
+.spinner-wrap.on{display:flex}
+.spin{width:36px;height:36px;border:3px solid #222;border-top-color:var(--rouge);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+a{color:var(--rouge)}
+</style>
+</head>
+<body>
+<div class="card">
+  <span class="badge">⚠️ PAGE DE TEST — NE PAS PARTAGER</span>
+  <h1>Test Paiement Stripe</h1>
+  <p class="desc">Commande test à 0,01€ en mode Stripe Test. Aucun vrai débit ne sera effectué.</p>
+
+  <!-- Carte de test -->
+  <div class="test-card">
+    <p>Carte de test à utiliser :</p>
+    <p><strong>4242 4242 4242 4242</strong></p>
+    <p>Date : <strong>12/28</strong> &nbsp; CVC : <strong>123</strong> &nbsp; ZIP : <strong>75001</strong></p>
+  </div>
+
+  <div class="field">
+    <label>Prénom</label>
+    <input type="text" id="prenom" value="Test">
+  </div>
+  <div class="field">
+    <label>Nom</label>
+    <input type="text" id="nom" value="Client">
+  </div>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" id="email" value="test@flash-jour.com">
+  </div>
+  <div class="field">
+    <label>Adresse</label>
+    <input type="text" id="adresse" value="1 rue du Test">
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div class="field">
+      <label>CP</label>
+      <input type="text" id="cp" value="75001">
+    </div>
+    <div class="field">
+      <label>Ville</label>
+      <input type="text" id="ville" value="Paris">
+    </div>
+  </div>
+
+  <div id="form-section">
+    <button class="btn" onclick="lancerTest()">Tester le paiement — 0,01€</button>
+  </div>
+
+  <div class="spinner-wrap" id="loading">
+    <div class="spin"></div>
+    <div style="font-size:13px;color:var(--texte-dim)">Création de la session Stripe...</div>
+  </div>
+
+  <div style="margin-top:20px;font-size:12px;color:var(--texte-dim);text-align:center">
+    <a href="/">← Retour au site</a>
+  </div>
+</div>
+
+<!-- FORM STRIPE TEST (POST vers n8n webhook test) -->
+<form id="stripe-test-form" method="POST" action="https://smconsulting.app.n8n.cloud/webhook/flash-checkout" style="display:none">
+  <input type="hidden" name="nom_complet" id="h-nom">
+  <input type="hidden" name="email" id="h-email">
+  <input type="hidden" name="adresse" id="h-adresse">
+  <input type="hidden" name="cp" id="h-cp">
+  <input type="hidden" name="ville" id="h-ville">
+  <input type="hidden" name="product_name" value="[TEST] Flash-Jour Paiement Test">
+  <input type="hidden" name="product_price_cents" value="1">
+  <input type="hidden" name="cj_vid" value="TEST_NO_CJ_ORDER">
+  <input type="hidden" name="test_mode" value="true">
+</form>
+
+<script>
+function lancerTest() {
+  document.getElementById('h-nom').value = document.getElementById('prenom').value + ' ' + document.getElementById('nom').value;
+  document.getElementById('h-email').value = document.getElementById('email').value;
+  document.getElementById('h-adresse').value = document.getElementById('adresse').value;
+  document.getElementById('h-cp').value = document.getElementById('cp').value;
+  document.getElementById('h-ville').value = document.getElementById('ville').value;
+
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('loading').classList.add('on');
+
+  setTimeout(function() {
+    document.getElementById('stripe-test-form').submit();
+  }, 300);
+}
+</script>
+</body>
+</html>
