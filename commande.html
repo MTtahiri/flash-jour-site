@@ -169,9 +169,9 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
   - Le Client ID Live commence par AZ... ou AT...
 ══════════════════════════════════════════════════ -->
 <script>
-  var PAYPAL_CLIENT_ID = 'AT2A1Ip8MYV4X_9PPMX5G2Q6Qk89BphCH-Wa4z1EMxg40b_GMXzjJ07ekV6aPoeDIt0mxH892MX9zLEj';
+  var PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID_A_REMPLACER';
   // Vérification automatique du Client ID
-  if (PAYPAL_CLIENT_ID === 'AT2A1Ip8MYV4X_9PPMX5G2Q6Qk89BphCH-Wa4z1EMxg40b_GMXzjJ07ekV6aPoeDIt0mxH892MX9zLEj' || PAYPAL_CLIENT_ID.length < 10) {
+  if (PAYPAL_CLIENT_ID === 'PAYPAL_CLIENT_ID_A_REMPLACER' || PAYPAL_CLIENT_ID.length < 10) {
     document.getElementById('paypal-fallback').style.display = 'block';
     console.warn('[Flash-Jour] PayPal Client ID non configuré.');
   } else {
@@ -293,16 +293,17 @@ function payerStripe() {
   }
   document.getElementById('notif').className = 'notif';
   var c = getClient();
-  document.getElementById('h-nom').value = c.nom;
-  document.getElementById('h-email').value = c.email;
-  document.getElementById('h-adresse').value = c.adresse;
-  document.getElementById('h-cp').value = c.cp;
-  document.getElementById('h-ville').value = c.ville;
-  document.getElementById('h-prix').value = PRODUIT.prixCents;
-  document.getElementById('h-vid').value = PRODUIT.cjVid;
-  document.getElementById('h-pname').value = PRODUIT.nom;
+
+  // Sauvegarder les infos client pour la page de confirmation
+  sessionStorage.setItem('fj_client', JSON.stringify(c));
+  sessionStorage.setItem('fj_product', PRODUIT.nom);
+
   document.getElementById('loading').classList.add('on');
-  document.getElementById('stripe-form').submit();
+
+  // Stripe Payment Link direct (0 exécution n8n)
+  var url = 'https://buy.stripe.com/28EaEWgOJcVOda6aKgfMA00';
+  url += '?prefilled_email=' + encodeURIComponent(c.email);
+  window.location.href = url;
 }
 
 // ─── PAYPAL (initialisation après chargement SDK) ───

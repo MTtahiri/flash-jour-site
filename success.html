@@ -178,9 +178,17 @@ body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;
     document.getElementById('info-email').textContent = decodeURIComponent(email);
   }
 
-  // Produit depuis sessionStorage ou localStorage
+  // Produit depuis sessionStorage
   const prodNom = sessionStorage.getItem('fj_product') || 'Mini Projecteur Pocket 4K';
   document.getElementById('info-produit').textContent = prodNom;
+
+  // Infos client depuis sessionStorage (renseignées par commande.html)
+  try {
+    const client = JSON.parse(sessionStorage.getItem('fj_client') || '{}');
+    if (client.email && !email) {
+      document.getElementById('info-email').textContent = client.email;
+    }
+  } catch(e) {}
 
   // Date livraison estimée (+12 jours ouvrables)
   function addJoursOuvrables(date, jours) {
