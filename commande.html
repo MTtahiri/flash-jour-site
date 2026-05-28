@@ -48,9 +48,6 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
 .notif{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px}
 .notif.err{background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.3);color:#ff9999;display:flex}
 .badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim)}
-/* Barre de config manquante */
-.config-warn{background:#f59e0b22;border:1px solid #f59e0b55;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#f59e0b;display:none}
-.config-warn.on{display:block}
 </style>
 </head>
 <body>
@@ -70,7 +67,6 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
   <div id="notif" class="notif"></div>
 
   <div class="grid">
-    <!-- COLONNE GAUCHE -->
     <div>
       <div class="pcard">
         <div class="pimg">📽️</div>
@@ -102,32 +98,24 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
       </div>
     </div>
 
-    <!-- COLONNE DROITE : PAIEMENT -->
     <div class="panel">
       <div class="stitle" style="margin-bottom:16px"><div class="snum">2</div>Paiement sécurisé</div>
-
       <div class="tline"><span style="color:var(--dim)">Produit</span><span id="ui-total-prod">49,00 €</span></div>
       <div class="tline"><span style="color:var(--dim)">Livraison</span><span style="color:var(--vert);font-size:13px">GRATUITE</span></div>
       <div class="tbig"><span>TOTAL</span><span style="color:var(--rouge)" id="ui-total">49,00 €</span></div>
-
       <div style="margin-top:20px">
-        <!-- STRIPE -->
         <button class="btn btn-red" id="btn-stripe" onclick="payerStripe()">
           💳 Payer par carte — <span id="ui-btn-prix">49€</span>
         </button>
         <div style="text-align:center;font-size:11px;color:var(--dim);margin-bottom:4px">
           Visa · Mastercard · CB · Apple Pay · Google Pay
         </div>
-
         <div class="divider">ou</div>
-
-        <!-- PAYPAL -->
         <div id="paypal-button-container"></div>
         <div id="paypal-fallback" style="display:none;padding:10px;text-align:center;font-size:12px;color:var(--dim)">
           PayPal non configuré — paiement par carte disponible ci-dessus
         </div>
       </div>
-
       <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;border-top:1px solid var(--bord);padding-top:16px">
         <span class="badge">🔐 Chiffré 256-bit</span>
         <span class="badge">✅ Sécurisé Stripe</span>
@@ -142,246 +130,129 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
   </div>
 </div>
 
-<!-- FORM STRIPE (soumission vers n8n webhook) -->
-<form id="stripe-form" method="POST" action="https://smconsulting.app.n8n.cloud/webhook/flash-checkout" style="display:none">
-  <input type="hidden" name="nom_complet"          id="h-nom">
-  <input type="hidden" name="email"                id="h-email">
-  <input type="hidden" name="adresse"              id="h-adresse">
-  <input type="hidden" name="cp"                   id="h-cp">
-  <input type="hidden" name="ville"                id="h-ville">
-  <input type="hidden" name="product_name"         id="h-pname"  value="Mini Projecteur Pocket 4K">
-  <input type="hidden" name="product_price_cents"  id="h-prix"   value="4900">
-  <input type="hidden" name="cj_vid"               id="h-vid"    value="1000109099999">
-</form>
-
-<!-- ═══════════════════════════════════════════════
-  CONFIGURATION PAYPAL — ÉTAPES :
-  1. Aller sur developer.paypal.com
-  2. My Apps & Credentials > Create App
-  3. Copier le Client ID (commence par AY... ou AZ...)
-  4. Remplacer PAYPAL_CLIENT_ID_A_REMPLACER ci-dessous
-  5. Pour tester : utiliser le Client ID du mode Sandbox
-  6. Pour production : utiliser le Client ID du mode Live
-
-  ERREURS FRÉQUENTES :
-  - NE PAS utiliser le Secret (commence par E...) — c'est le Client ID qu'il faut
-  - Le Client ID de Sandbox commence par AY...
-  - Le Client ID Live commence par AZ... ou AT...
-══════════════════════════════════════════════════ -->
 <script>
+  // ══ PAYPAL — Remplacer par votre vrai Client ID ══
+  // developer.paypal.com → My Apps → Client ID (commence par AY ou AZ)
   var PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID_A_REMPLACER';
-  // Vérification automatique du Client ID
+
   if (PAYPAL_CLIENT_ID === 'PAYPAL_CLIENT_ID_A_REMPLACER' || PAYPAL_CLIENT_ID.length < 10) {
     document.getElementById('paypal-fallback').style.display = 'block';
-    console.warn('[Flash-Jour] PayPal Client ID non configuré.');
   } else {
-    // Charger le SDK PayPal dynamiquement
     var s = document.createElement('script');
     s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=EUR&locale=fr_FR';
     s.onload = initPayPal;
     s.onerror = function() {
       document.getElementById('paypal-fallback').style.display = 'block';
       document.getElementById('paypal-button-container').style.display = 'none';
-      console.error('[Flash-Jour] Erreur chargement SDK PayPal — vérifier le Client ID.');
     };
     document.body.appendChild(s);
   }
 </script>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIG PRODUIT (mise à jour dynamique depuis Airtable)
-// ═══════════════════════════════════════════════
-var PRODUIT = {
-  nom: 'Mini Projecteur Pocket 4K',
-  prix: 49.00,
-  prixCents: 4900,
-  cjVid: '1000109099999'
-};
+var PRODUIT = { nom: 'Mini Projecteur Pocket 4K', prix: 49.00, prixCents: 4900, cjVid: '1000109099999' };
 
-// ─── Cache 1h pour économiser les exécutions n8n ───
 (async function loadProduit() {
   var CACHE_KEY = 'fj_prod_v2', TTL = 3600000;
   try {
     var c = localStorage.getItem(CACHE_KEY);
-    if (c) {
-      var obj = JSON.parse(c);
-      if (Date.now() - obj.ts < TTL) { apply(obj.d); return; }
-    }
+    if (c) { var obj = JSON.parse(c); if (Date.now() - obj.ts < TTL) { apply(obj.d); return; } }
     var r = await fetch('https://smconsulting.app.n8n.cloud/webhook/produit-du-jour');
     if (!r.ok) return;
     var p = await r.json();
     localStorage.setItem(CACHE_KEY, JSON.stringify({ d: p, ts: Date.now() }));
     apply(p);
-  } catch(e) { /* garder valeurs par défaut */ }
+  } catch(e) {}
 
   function apply(p) {
     if (!p) return;
-    if (p.nom) {
-      PRODUIT.nom = p.nom;
-      document.getElementById('ui-nom').textContent = p.nom;
-      document.getElementById('h-pname').value = p.nom;
-      sessionStorage.setItem('fj_product', p.nom);
-    }
+    if (p.nom) { PRODUIT.nom = p.nom; document.getElementById('ui-nom').textContent = p.nom; sessionStorage.setItem('fj_product', p.nom); }
     if (p.prix_flash) {
-      var px = parseFloat(p.prix_flash);
-      PRODUIT.prix = px;
-      PRODUIT.prixCents = Math.max(Math.round(px * 100), 50);
-      var fmt = px.toFixed(2).replace('.', ',');
-      document.getElementById('ui-prix').textContent = fmt + '€';
-      document.getElementById('ui-total-prod').textContent = fmt + ' €';
-      document.getElementById('ui-total').textContent = fmt + ' €';
-      document.getElementById('ui-btn-prix').textContent = px.toFixed(0) + '€';
-      document.getElementById('h-prix').value = PRODUIT.prixCents;
+      var px = parseFloat(p.prix_flash); PRODUIT.prix = px; PRODUIT.prixCents = Math.max(Math.round(px*100),50);
+      var fmt = px.toFixed(2).replace('.',',');
+      document.getElementById('ui-prix').textContent = fmt+'€';
+      document.getElementById('ui-total-prod').textContent = fmt+' €';
+      document.getElementById('ui-total').textContent = fmt+' €';
+      document.getElementById('ui-btn-prix').textContent = px.toFixed(0)+'€';
     }
-    if (p.prix_barre) document.getElementById('ui-barre').textContent = parseFloat(p.prix_barre).toFixed(0) + '€';
-    if (p.remise_pct) document.getElementById('ui-remise').textContent = '−' + p.remise_pct + '%';
-    if (p.cj_vid) { PRODUIT.cjVid = p.cj_vid; document.getElementById('h-vid').value = p.cj_vid; }
+    if (p.prix_barre) document.getElementById('ui-barre').textContent = parseFloat(p.prix_barre).toFixed(0)+'€';
+    if (p.remise_pct) document.getElementById('ui-remise').textContent = '−'+p.remise_pct+'%';
+    if (p.cj_vid) PRODUIT.cjVid = p.cj_vid;
   }
 })();
 
-// ─── Validation formulaire ───
-function v(id, ok) {
-  document.getElementById('f-' + id).classList.toggle('has-err', !ok);
-  document.getElementById(id).classList.toggle('ok', ok);
-  document.getElementById(id).classList.toggle('ko', !ok);
-  return ok;
-}
 var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 var cpRe = /^\d{5}$/;
 
+function v(id, ok) {
+  document.getElementById('f-'+id).classList.toggle('has-err',!ok);
+  document.getElementById(id).classList.toggle('ok',ok);
+  document.getElementById(id).classList.toggle('ko',!ok);
+  return ok;
+}
 function validate() {
   return [
-    v('prenom', document.getElementById('prenom').value.trim().length >= 2),
-    v('nom',    document.getElementById('nom').value.trim().length >= 2),
+    v('prenom', document.getElementById('prenom').value.trim().length>=2),
+    v('nom',    document.getElementById('nom').value.trim().length>=2),
     v('email',  emailRe.test(document.getElementById('email').value.trim())),
-    v('adresse',document.getElementById('adresse').value.trim().length >= 5),
+    v('adresse',document.getElementById('adresse').value.trim().length>=5),
     v('cp',     cpRe.test(document.getElementById('cp').value.trim())),
-    v('ville',  document.getElementById('ville').value.trim().length >= 2)
+    v('ville',  document.getElementById('ville').value.trim().length>=2)
   ].every(Boolean);
 }
-
-// Validation en temps réel
-['prenom','nom','adresse','ville'].forEach(function(id) {
-  document.getElementById(id).addEventListener('blur', function() { v(id, this.value.trim().length >= 2); });
+['prenom','nom','adresse','ville'].forEach(function(id){
+  document.getElementById(id).addEventListener('blur',function(){v(id,this.value.trim().length>=2);});
 });
-document.getElementById('email').addEventListener('blur', function() { v('email', emailRe.test(this.value.trim())); });
-document.getElementById('cp').addEventListener('blur', function() { v('cp', cpRe.test(this.value.trim())); });
+document.getElementById('email').addEventListener('blur',function(){v('email',emailRe.test(this.value.trim()));});
+document.getElementById('cp').addEventListener('blur',function(){v('cp',cpRe.test(this.value.trim()));});
 
 function getClient() {
   return {
-    nom: document.getElementById('prenom').value.trim() + ' ' + document.getElementById('nom').value.trim(),
+    nom: document.getElementById('prenom').value.trim()+' '+document.getElementById('nom').value.trim(),
     email: document.getElementById('email').value.trim(),
     adresse: document.getElementById('adresse').value.trim(),
     cp: document.getElementById('cp').value.trim(),
     ville: document.getElementById('ville').value.trim()
   };
 }
-
 function showErr(msg) {
-  var n = document.getElementById('notif');
-  n.textContent = msg;
-  n.className = 'notif err';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  var n = document.getElementById('notif'); n.textContent = msg;
+  n.className = 'notif err'; window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ─── STRIPE (via n8n webhook → Stripe Checkout) ───
+// ══ STRIPE PRODUCTION — Paiement direct ══
 function payerStripe() {
-  if (!validate()) {
-    showErr('⚠️ Merci de remplir tous les champs correctement avant de payer.');
-    return;
-  }
+  if (!validate()) { showErr('⚠️ Merci de remplir tous les champs correctement.'); return; }
   document.getElementById('notif').className = 'notif';
   var c = getClient();
-
-  // Sauvegarder les infos client pour la page de confirmation
   sessionStorage.setItem('fj_client', JSON.stringify(c));
   sessionStorage.setItem('fj_product', PRODUIT.nom);
-
   document.getElementById('loading').classList.add('on');
-
-  // Stripe Payment Link direct (0 exécution n8n)
-  var url = 'https://buy.stripe.com/test_14A9AV1nr7jz6tjgEk2sM00';
+  var url = 'https://buy.stripe.com/28EaEWgOJcVOda6aKgfMA00';
   url += '?prefilled_email=' + encodeURIComponent(c.email);
   window.location.href = url;
 }
 
-// ─── PAYPAL (initialisation après chargement SDK) ───
 function initPayPal() {
   if (typeof paypal === 'undefined') return;
   paypal.Buttons({
-    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 48 },
-
+    style: { layout:'vertical', color:'gold', shape:'rect', label:'paypal', height:48 },
     onClick: function(data, actions) {
-      if (!validate()) {
-        showErr('⚠️ Merci de remplir votre adresse avant de payer via PayPal.');
-        return actions.reject();
-      }
+      if (!validate()) { showErr('⚠️ Remplissez votre adresse avant PayPal.'); return actions.reject(); }
     },
-
     createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          amount: {
-            value: PRODUIT.prix.toFixed(2),   // Ex: "49.00" — doit être une string avec 2 décimales
-            currency_code: 'EUR'
-          },
-          description: PRODUIT.nom,
-          custom_id: PRODUIT.cjVid
-        }]
-      });
+      return actions.order.create({ purchase_units:[{ amount:{ value:PRODUIT.prix.toFixed(2), currency_code:'EUR' }, description:PRODUIT.nom }] });
     },
-
     onApprove: function(data, actions) {
       document.getElementById('loading').classList.add('on');
-      return actions.order.capture().then(function(details) {
-        var c = getClient();
-        // Notifier n8n pour créer la commande CJdropshipping
-        fetch('https://smconsulting.app.n8n.cloud/webhook/stripe-commande', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            body: {
-              type: 'paypal.order.completed',
-              data: {
-                object: {
-                  id: data.orderID,
-                  amount_total: PRODUIT.prixCents,
-                  customer_details: {
-                    email: c.email,
-                    name: c.nom,
-                    phone: null,
-                    address: {
-                      line1: c.adresse,
-                      city: c.ville,
-                      postal_code: c.cp,
-                      country: 'FR',
-                      state: 'France'
-                    }
-                  },
-                  metadata: {
-                    cj_vid: PRODUIT.cjVid,
-                    product_name: PRODUIT.nom
-                  }
-                }
-              }
-            }
-          })
-        }).catch(function(e) { console.warn('[Flash-Jour] Webhook PayPal non envoyé:', e); });
-        // Redirection vers la page de confirmation
-        window.location.href = '/success.html?paypal_order=' + data.orderID + '&email=' + encodeURIComponent(c.email);
+      return actions.order.capture().then(function() {
+        window.location.href = '/success.html?paypal_order='+data.orderID+'&email='+encodeURIComponent(getClient().email);
       });
     },
-
-    onCancel: function() {
-      // Client a annulé — pas d'erreur à afficher
-      console.log('[Flash-Jour] Paiement PayPal annulé par le client.');
-    },
-
+    onCancel: function() {},
     onError: function(err) {
       document.getElementById('loading').classList.remove('on');
-      showErr('❌ Erreur PayPal. Veuillez réessayer ou payer par carte bancaire.');
-      console.error('[Flash-Jour] Erreur PayPal:', err);
+      showErr('❌ Erreur PayPal. Essayez par carte bancaire.');
     }
   }).render('#paypal-button-container');
 }
