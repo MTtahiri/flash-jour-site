@@ -169,9 +169,9 @@ body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;fo
   - Le Client ID Live commence par AZ... ou AT...
 ══════════════════════════════════════════════════ -->
 <script>
-  var PAYPAL_CLIENT_ID = 'https://buy.stripe.com/test_14A9AV1nr7jz6tjgEk2sM00';
+  var PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID_A_REMPLACER';
   // Vérification automatique du Client ID
-  if (PAYPAL_CLIENT_ID === 'https://buy.stripe.com/test_14A9AV1nr7jz6tjgEk2sM00' || PAYPAL_CLIENT_ID.length < 10) {
+  if (PAYPAL_CLIENT_ID === 'PAYPAL_CLIENT_ID_A_REMPLACER' || PAYPAL_CLIENT_ID.length < 10) {
     document.getElementById('paypal-fallback').style.display = 'block';
     console.warn('[Flash-Jour] PayPal Client ID non configuré.');
   } else {
@@ -301,7 +301,7 @@ function payerStripe() {
   document.getElementById('loading').classList.add('on');
 
   // Stripe Payment Link direct (0 exécution n8n)
-  var url = 'https://buy.stripe.com/28EaEWgOJcVOda6aKgfMA00';
+  var url = 'https://buy.stripe.com/test_14A9AV1nr7jz6tjgEk2sM00';
   url += '?prefilled_email=' + encodeURIComponent(c.email);
   window.location.href = url;
 }
