@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--rouge:#e63946;--fond:#0a0a0a;--surface:#111;--s2:#1a1a1a;--bord:#2a2a2a;--txt:#f0f0f0;--dim:#888;--vert:#2ecc71}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}h
 body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;min-height:100vh}
 .header{border-bottom:1px solid var(--bord);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:var(--fond)}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt);text-decoration:none}
@@ -301,7 +301,7 @@ function payerStripe() {
   document.getElementById('loading').classList.add('on');
 
   // Stripe Payment Link direct (0 exécution n8n)
-  var url = 'https://buy.stripe.com/test_14A9AV1nr7jz6tjgEk2sM00';
+  var url = 'https://buy.stripe.com/28EaEWgOJcVOda6aKgfMA00';
   url += '?prefilled_email=' + encodeURIComponent(c.email);
   window.location.href = url;
 }
