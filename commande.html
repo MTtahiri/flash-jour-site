@@ -6,52 +6,55 @@
 <title>Flash-Jour — Finaliser votre commande</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--rouge:#e63946;--fond:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--bord:#2a2a2a;--texte:#f0f0f0;--texte-dim:#888;--vert:#2ecc71}
+:root{--rouge:#e63946;--fond:#0a0a0a;--surface:#111;--s2:#1a1a1a;--bord:#2a2a2a;--txt:#f0f0f0;--dim:#888;--vert:#2ecc71}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;min-height:100vh}
+body{background:var(--fond);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;min-height:100vh}
 .header{border-bottom:1px solid var(--bord);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:var(--fond)}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--texte);text-decoration:none;letter-spacing:.05em}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt);text-decoration:none}
 .logo span{color:var(--rouge)}
 .urgence{background:var(--rouge);color:#fff;font-size:11px;font-weight:600;padding:4px 12px;border-radius:2px;letter-spacing:.08em;text-transform:uppercase}
 .container{max-width:900px;margin:0 auto;padding:32px 20px 80px}
 .grid{display:grid;grid-template-columns:1fr 400px;gap:32px;align-items:start}
 @media(max-width:720px){.grid{grid-template-columns:1fr}}
-.section-titre{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.05em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.num{width:26px;height:26px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
-.product-card{background:var(--surface);border:1px solid var(--bord);border-radius:10px;padding:18px;display:flex;gap:16px;align-items:center;margin-bottom:28px}
-.product-img{width:70px;height:70px;background:var(--surface2);border-radius:8px;border:1px solid var(--bord);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form-full{grid-column:1/-1}
+.stitle{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.05em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.snum{width:26px;height:26px;border-radius:50%;background:var(--rouge);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.pcard{background:var(--surface);border:1px solid var(--bord);border-radius:10px;padding:18px;display:flex;gap:16px;align-items:center;margin-bottom:28px}
+.pimg{width:70px;height:70px;background:var(--s2);border-radius:8px;border:1px solid var(--bord);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ffull{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:12px;font-weight:600;color:var(--texte-dim);text-transform:uppercase;letter-spacing:.06em}
-.field input{background:var(--surface);border:1.5px solid var(--bord);border-radius:7px;padding:11px 14px;color:var(--texte);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .18s;outline:none}
+.field label{font-size:12px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.field input{background:var(--surface);border:1.5px solid var(--bord);border-radius:7px;padding:11px 14px;color:var(--txt);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .18s;outline:none}
 .field input:focus{border-color:var(--rouge)}
 .field input.ok{border-color:var(--vert)}
-.field input.err{border-color:#ff4444}
-.field-err{font-size:12px;color:#ff6666;display:none;margin-top:2px}
-.has-err .field-err{display:block}
+.field input.ko{border-color:#ff4444}
+.ferr{font-size:12px;color:#ff6666;display:none;margin-top:2px}
+.has-err .ferr{display:block}
 .panel{background:var(--surface);border:1px solid var(--bord);border-radius:12px;padding:24px;position:sticky;top:74px}
-.total-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:14px}
-.total-big{font-family:'Bebas Neue',sans-serif;font-size:22px;border-top:1px solid var(--bord);margin-top:4px;padding-top:14px;display:flex;justify-content:space-between}
-.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--texte-dim);font-size:12px}
+.tline{display:flex;justify-content:space-between;padding:8px 0;font-size:14px}
+.tbig{font-family:'Bebas Neue',sans-serif;font-size:22px;border-top:1px solid var(--bord);margin-top:4px;padding-top:14px;display:flex;justify-content:space-between}
+.divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--dim);font-size:12px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bord)}
-.btn{width:100%;color:#fff;border:none;border-radius:8px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .18s;letter-spacing:.02em}
-.btn-rouge{background:var(--rouge)}
-.btn-rouge:hover{background:#c82333;transform:translateY(-1px)}
-.btn-stripe-link{background:#635bff}
-.btn-stripe-link:hover{background:#4f46e5;transform:translateY(-1px)}
-.paypal-zone{margin-top:4px}
-.loading{display:none;position:fixed;inset:0;background:rgba(10,10,10,.85);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.btn{width:100%;color:#fff;border:none;border-radius:8px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .18s;letter-spacing:.02em;margin-bottom:4px}
+.btn:active{transform:scale(.98)}
+.btn-red{background:var(--rouge)}
+.btn-red:hover:not(:disabled){background:#c82333;transform:translateY(-1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+#paypal-button-container{min-height:50px}
+.loading{display:none;position:fixed;inset:0;background:rgba(10,10,10,.88);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 .loading.on{display:flex}
-.spin{width:42px;height:42px;border:3px solid var(--surface2);border-top-color:var(--rouge);border-radius:50%;animation:sp .7s linear infinite}
+.spin{width:42px;height:42px;border:3px solid var(--s2);border-top-color:var(--rouge);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.notif{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none}
-.notif.err{background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.3);color:#ff9999;display:flex;gap:10px}
-.badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--texte-dim)}
-.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.notif{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;align-items:center;gap:10px}
+.notif.err{background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.3);color:#ff9999;display:flex}
+.badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim)}
+/* Barre de config manquante */
+.config-warn{background:#f59e0b22;border:1px solid #f59e0b55;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#f59e0b;display:none}
+.config-warn.on{display:block}
 </style>
 </head>
 <body>
+
 <header class="header">
   <a href="/" class="logo">FLASH<span>.</span>JOUR</a>
   <span class="urgence">⚡ Offre expire à minuit</span>
@@ -60,260 +63,326 @@ body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;
 <div class="loading" id="loading">
   <div class="spin"></div>
   <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.05em">Redirection sécurisée...</div>
-  <div style="font-size:13px;color:var(--texte-dim)">Ne fermez pas cette page</div>
+  <div style="font-size:13px;color:var(--dim)">Ne fermez pas cette page</div>
 </div>
 
 <div class="container">
   <div id="notif" class="notif"></div>
+
   <div class="grid">
-    <!-- GAUCHE -->
+    <!-- COLONNE GAUCHE -->
     <div>
-      <div class="product-card">
-        <div class="product-img">📽️</div>
+      <div class="pcard">
+        <div class="pimg">📽️</div>
         <div>
           <div style="font-weight:600;font-size:14px;margin-bottom:4px" id="ui-nom">Mini Projecteur Pocket 4K</div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
             <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--rouge)" id="ui-prix">49€</span>
-            <span style="font-size:13px;color:var(--texte-dim);text-decoration:line-through" id="ui-barre">129€</span>
+            <span style="font-size:13px;color:var(--dim);text-decoration:line-through" id="ui-barre">129€</span>
             <span style="font-size:11px;font-weight:600;background:var(--rouge);color:#fff;padding:2px 8px;border-radius:2px" id="ui-remise">−62%</span>
           </div>
-          <div style="font-size:12px;color:var(--texte-dim);margin-top:4px">✓ Livraison express incluse</div>
+          <div style="font-size:12px;color:var(--dim);margin-top:4px">✓ Livraison express incluse</div>
         </div>
       </div>
 
-      <div class="section-titre"><div class="num">1</div>Adresse de livraison</div>
-      <div class="form-grid">
-        <div class="field" id="f-prenom"><label>Prénom *</label><input id="prenom" placeholder="Jean" autocomplete="given-name"><span class="field-err">Requis</span></div>
-        <div class="field" id="f-nom"><label>Nom *</label><input id="nom" placeholder="Dupont" autocomplete="family-name"><span class="field-err">Requis</span></div>
-        <div class="field form-full" id="f-email"><label>Email *</label><input type="email" id="email" placeholder="jean@email.com" autocomplete="email"><span class="field-err">Email invalide</span></div>
-        <div class="field form-full" id="f-adresse"><label>Adresse *</label><input id="adresse" placeholder="12 rue de la Paix" autocomplete="street-address"><span class="field-err">Requis</span></div>
-        <div class="field" id="f-cp"><label>Code Postal *</label><input id="cp" placeholder="75001" maxlength="5" autocomplete="postal-code"><span class="field-err">5 chiffres requis</span></div>
-        <div class="field" id="f-ville"><label>Ville *</label><input id="ville" placeholder="Paris" autocomplete="address-level2"><span class="field-err">Requis</span></div>
+      <div class="stitle"><div class="snum">1</div>Adresse de livraison</div>
+      <div class="fgrid">
+        <div class="field" id="f-prenom"><label>Prénom *</label><input id="prenom" placeholder="Jean" autocomplete="given-name"><span class="ferr">Requis (2 car. min)</span></div>
+        <div class="field" id="f-nom"><label>Nom *</label><input id="nom" placeholder="Dupont" autocomplete="family-name"><span class="ferr">Requis (2 car. min)</span></div>
+        <div class="field ffull" id="f-email"><label>Email *</label><input type="email" id="email" placeholder="jean.dupont@email.com" autocomplete="email"><span class="ferr">Format email invalide</span></div>
+        <div class="field ffull" id="f-adresse"><label>Adresse *</label><input id="adresse" placeholder="12 rue de la République" autocomplete="street-address"><span class="ferr">Requis (5 car. min)</span></div>
+        <div class="field" id="f-cp"><label>Code Postal *</label><input id="cp" placeholder="75001" maxlength="5" autocomplete="postal-code"><span class="ferr">5 chiffres requis</span></div>
+        <div class="field" id="f-ville"><label>Ville *</label><input id="ville" placeholder="Paris" autocomplete="address-level2"><span class="ferr">Requis (2 car. min)</span></div>
       </div>
-      <div class="badges" style="margin-top:22px">
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:22px">
         <span class="badge">🔒 Paiement 100% sécurisé SSL</span>
-        <span class="badge">🚚 Expédition 24-48h</span>
-        <span class="badge">↩️ Satisfait ou remboursé 14j</span>
+        <span class="badge">🚚 Expédition sous 24-48h</span>
+        <span class="badge">↩️ Remboursé si non satisfait 14j</span>
       </div>
     </div>
 
-    <!-- DROITE: PAIEMENT -->
+    <!-- COLONNE DROITE : PAIEMENT -->
     <div class="panel">
-      <div class="section-titre" style="margin-bottom:16px"><div class="num">2</div>Paiement sécurisé</div>
-      <div class="total-line"><span style="color:var(--texte-dim)">Produit</span><span id="ui-total-prod">49,00 €</span></div>
-      <div class="total-line"><span style="color:var(--texte-dim)">Livraison</span><span style="color:var(--vert);font-size:13px">GRATUITE</span></div>
-      <div class="total-big"><span>TOTAL</span><span style="color:var(--rouge)" id="ui-total">49,00 €</span></div>
+      <div class="stitle" style="margin-bottom:16px"><div class="snum">2</div>Paiement sécurisé</div>
+
+      <div class="tline"><span style="color:var(--dim)">Produit</span><span id="ui-total-prod">49,00 €</span></div>
+      <div class="tline"><span style="color:var(--dim)">Livraison</span><span style="color:var(--vert);font-size:13px">GRATUITE</span></div>
+      <div class="tbig"><span>TOTAL</span><span style="color:var(--rouge)" id="ui-total">49,00 €</span></div>
 
       <div style="margin-top:20px">
-        <!-- STRIPE via n8n (méthode principale) -->
-        <button class="btn btn-rouge" id="btn-stripe" onclick="payerStripeN8N()">
+        <!-- STRIPE -->
+        <button class="btn btn-red" id="btn-stripe" onclick="payerStripe()">
           💳 Payer par carte — <span id="ui-btn-prix">49€</span>
         </button>
-
-        <!-- STRIPE DIRECT (fallback sans n8n) -->
-        <button class="btn btn-stripe-link" id="btn-stripe-link" style="margin-top:10px;display:none" onclick="payerStripeLink()">
-          💳 Payer par carte (lien direct)
-        </button>
-
-        <div style="text-align:center;font-size:11px;color:var(--texte-dim);margin-top:8px">
+        <div style="text-align:center;font-size:11px;color:var(--dim);margin-bottom:4px">
           Visa · Mastercard · CB · Apple Pay · Google Pay
         </div>
 
         <div class="divider">ou</div>
-        <div id="paypal-zone"></div>
+
+        <!-- PAYPAL -->
+        <div id="paypal-button-container"></div>
+        <div id="paypal-fallback" style="display:none;padding:10px;text-align:center;font-size:12px;color:var(--dim)">
+          PayPal non configuré — paiement par carte disponible ci-dessus
+        </div>
       </div>
 
-      <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;border-top:1px solid var(--bord);padding-top:16px">
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:16px;border-top:1px solid var(--bord);padding-top:16px">
         <span class="badge">🔐 Chiffré 256-bit</span>
         <span class="badge">✅ Sécurisé Stripe</span>
       </div>
     </div>
   </div>
 
-  <div style="text-align:center;margin-top:40px;font-size:12px;color:var(--texte-dim)">
-    <a href="/cgv.html" style="color:var(--texte-dim)">CGV</a> · 
-    <a href="/mentions-legales.html" style="color:var(--texte-dim)">Mentions légales</a> · 
-    <a href="/politique-confidentialite.html" style="color:var(--texte-dim)">Confidentialité</a>
+  <div style="text-align:center;margin-top:40px;font-size:12px;color:var(--dim)">
+    <a href="/cgv.html" style="color:var(--dim)">CGV</a> ·
+    <a href="/mentions-legales.html" style="color:var(--dim)">Mentions légales</a> ·
+    <a href="/politique-confidentialite.html" style="color:var(--dim)">Confidentialité</a>
   </div>
 </div>
 
-<!-- FORM STRIPE via n8n -->
+<!-- FORM STRIPE (soumission vers n8n webhook) -->
 <form id="stripe-form" method="POST" action="https://smconsulting.app.n8n.cloud/webhook/flash-checkout" style="display:none">
-  <input type="hidden" name="nom_complet" id="h-nom">
-  <input type="hidden" name="email" id="h-email">
-  <input type="hidden" name="adresse" id="h-adresse">
-  <input type="hidden" name="cp" id="h-cp">
-  <input type="hidden" name="ville" id="h-ville">
-  <input type="hidden" name="product_name" id="h-pname" value="Mini Projecteur Pocket 4K">
-  <input type="hidden" name="product_price_cents" id="h-prix" value="4900">
-  <input type="hidden" name="cj_vid" id="h-vid" value="1000109099999">
+  <input type="hidden" name="nom_complet"          id="h-nom">
+  <input type="hidden" name="email"                id="h-email">
+  <input type="hidden" name="adresse"              id="h-adresse">
+  <input type="hidden" name="cp"                   id="h-cp">
+  <input type="hidden" name="ville"                id="h-ville">
+  <input type="hidden" name="product_name"         id="h-pname"  value="Mini Projecteur Pocket 4K">
+  <input type="hidden" name="product_price_cents"  id="h-prix"   value="4900">
+  <input type="hidden" name="cj_vid"               id="h-vid"    value="1000109099999">
 </form>
 
-<!-- PAYPAL SDK -->
-<script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAML5u6-eOQcGeX2UWOgXj2aBB67cO19VizpKGmJZU6lJa6f_2M4Vowjd24EjnrvZtRe2ogjfS67DAN7c&components=hosted-buttons&disable-funding=venmo&currency=EUR">
+<!-- ═══════════════════════════════════════════════
+  CONFIGURATION PAYPAL — ÉTAPES :
+  1. Aller sur developer.paypal.com
+  2. My Apps & Credentials > Create App
+  3. Copier le Client ID (commence par AY... ou AZ...)
+  4. Remplacer PAYPAL_CLIENT_ID_A_REMPLACER ci-dessous
+  5. Pour tester : utiliser le Client ID du mode Sandbox
+  6. Pour production : utiliser le Client ID du mode Live
+
+  ERREURS FRÉQUENTES :
+  - NE PAS utiliser le Secret (commence par E...) — c'est le Client ID qu'il faut
+  - Le Client ID de Sandbox commence par AY...
+  - Le Client ID Live commence par AZ... ou AT...
+══════════════════════════════════════════════════ -->
+<script>
+  var PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID_A_REMPLACER';
+  // Vérification automatique du Client ID
+  if (PAYPAL_CLIENT_ID === 'PAYPAL_CLIENT_ID_A_REMPLACER' || PAYPAL_CLIENT_ID.length < 10) {
+    document.getElementById('paypal-fallback').style.display = 'block';
+    console.warn('[Flash-Jour] PayPal Client ID non configuré.');
+  } else {
+    // Charger le SDK PayPal dynamiquement
+    var s = document.createElement('script');
+    s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=EUR&locale=fr_FR';
+    s.onload = initPayPal;
+    s.onerror = function() {
+      document.getElementById('paypal-fallback').style.display = 'block';
+      document.getElementById('paypal-button-container').style.display = 'none';
+      console.error('[Flash-Jour] Erreur chargement SDK PayPal — vérifier le Client ID.');
+    };
+    document.body.appendChild(s);
+  }
 </script>
-// ─── CONFIG (chargée dynamiquement depuis Airtable via cache) ───
+
+<script>
+// ═══════════════════════════════════════════════
+// CONFIG PRODUIT (mise à jour dynamique depuis Airtable)
+// ═══════════════════════════════════════════════
 var PRODUIT = {
   nom: 'Mini Projecteur Pocket 4K',
-  prix: 49,
-  prix_barre: 129,
-  cj_vid: '1000109099999',
-  // URL Stripe Payment Link direct (fallback sans n8n)
-  // À remplir depuis Stripe Dashboard → Payment Links
-  stripe_link: 'https://buy.stripe.com/28EaEWgOJcVOda6aKgfMA00'
+  prix: 49.00,
+  prixCents: 4900,
+  cjVid: '1000109099999'
 };
 
-// ─── CHARGEMENT PRODUIT avec cache 1h (économise exécutions n8n) ───
-(async function() {
-  const CACHE_KEY = 'fj_produit_v1';
-  const TTL = 3600000;
+// ─── Cache 1h pour économiser les exécutions n8n ───
+(async function loadProduit() {
+  var CACHE_KEY = 'fj_prod_v2', TTL = 3600000;
   try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const { data, ts } = JSON.parse(cached);
-      if (Date.now() - ts < TTL) { appliquerProduit(data); return; }
+    var c = localStorage.getItem(CACHE_KEY);
+    if (c) {
+      var obj = JSON.parse(c);
+      if (Date.now() - obj.ts < TTL) { apply(obj.d); return; }
     }
-    const r = await fetch('https://smconsulting.app.n8n.cloud/webhook/produit-du-jour');
+    var r = await fetch('https://smconsulting.app.n8n.cloud/webhook/produit-du-jour');
     if (!r.ok) return;
-    const p = await r.json();
-    localStorage.setItem(CACHE_KEY, JSON.stringify({ data: p, ts: Date.now() }));
-    appliquerProduit(p);
-  } catch(e) {}
+    var p = await r.json();
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ d: p, ts: Date.now() }));
+    apply(p);
+  } catch(e) { /* garder valeurs par défaut */ }
+
+  function apply(p) {
+    if (!p) return;
+    if (p.nom) {
+      PRODUIT.nom = p.nom;
+      document.getElementById('ui-nom').textContent = p.nom;
+      document.getElementById('h-pname').value = p.nom;
+      sessionStorage.setItem('fj_product', p.nom);
+    }
+    if (p.prix_flash) {
+      var px = parseFloat(p.prix_flash);
+      PRODUIT.prix = px;
+      PRODUIT.prixCents = Math.max(Math.round(px * 100), 50);
+      var fmt = px.toFixed(2).replace('.', ',');
+      document.getElementById('ui-prix').textContent = fmt + '€';
+      document.getElementById('ui-total-prod').textContent = fmt + ' €';
+      document.getElementById('ui-total').textContent = fmt + ' €';
+      document.getElementById('ui-btn-prix').textContent = px.toFixed(0) + '€';
+      document.getElementById('h-prix').value = PRODUIT.prixCents;
+    }
+    if (p.prix_barre) document.getElementById('ui-barre').textContent = parseFloat(p.prix_barre).toFixed(0) + '€';
+    if (p.remise_pct) document.getElementById('ui-remise').textContent = '−' + p.remise_pct + '%';
+    if (p.cj_vid) { PRODUIT.cjVid = p.cj_vid; document.getElementById('h-vid').value = p.cj_vid; }
+  }
 })();
 
-function appliquerProduit(p) {
-  if (!p) return;
-  if (p.nom) { PRODUIT.nom = p.nom; document.getElementById('ui-nom').textContent = p.nom; document.getElementById('h-pname').value = p.nom; }
-  if (p.prix_flash) {
-    const px = parseFloat(p.prix_flash);
-    PRODUIT.prix = px;
-    const fmt = px.toFixed(2).replace('.',',');
-    document.getElementById('ui-prix').textContent = fmt + '€';
-    document.getElementById('ui-total-prod').textContent = fmt + ' €';
-    document.getElementById('ui-total').textContent = fmt + ' €';
-    document.getElementById('ui-btn-prix').textContent = px.toFixed(0) + '€';
-    document.getElementById('h-prix').value = Math.round(px * 100);
-  }
-  if (p.prix_barre) document.getElementById('ui-barre').textContent = parseFloat(p.prix_barre).toFixed(0) + '€';
-  if (p.remise_pct) document.getElementById('ui-remise').textContent = '−' + p.remise_pct + '%';
-  if (p.cj_vid) { PRODUIT.cj_vid = p.cj_vid; document.getElementById('h-vid').value = p.cj_vid; }
-  if (p.stripe_link) { PRODUIT.stripe_link = p.stripe_link; }
-  sessionStorage.setItem('fj_product', PRODUIT.nom);
-}
-
-// ─── VALIDATION ───
-function valider(id, ok) {
-  var f = document.getElementById('f-' + id);
-  var el = document.getElementById(id);
-  f.classList.toggle('has-err', !ok);
-  el.classList.toggle('ok', ok);
-  el.classList.toggle('err', !ok);
+// ─── Validation formulaire ───
+function v(id, ok) {
+  document.getElementById('f-' + id).classList.toggle('has-err', !ok);
+  document.getElementById(id).classList.toggle('ok', ok);
+  document.getElementById(id).classList.toggle('ko', !ok);
   return ok;
 }
-function emailOk(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-function cpOk(c) { return /^\d{5}$/.test(c); }
-function formulaireOk() {
+var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var cpRe = /^\d{5}$/;
+
+function validate() {
   return [
-    valider('prenom', document.getElementById('prenom').value.trim().length >= 2),
-    valider('nom', document.getElementById('nom').value.trim().length >= 2),
-    valider('email', emailOk(document.getElementById('email').value)),
-    valider('adresse', document.getElementById('adresse').value.trim().length >= 5),
-    valider('cp', cpOk(document.getElementById('cp').value.trim())),
-    valider('ville', document.getElementById('ville').value.trim().length >= 2)
+    v('prenom', document.getElementById('prenom').value.trim().length >= 2),
+    v('nom',    document.getElementById('nom').value.trim().length >= 2),
+    v('email',  emailRe.test(document.getElementById('email').value.trim())),
+    v('adresse',document.getElementById('adresse').value.trim().length >= 5),
+    v('cp',     cpRe.test(document.getElementById('cp').value.trim())),
+    v('ville',  document.getElementById('ville').value.trim().length >= 2)
   ].every(Boolean);
 }
-['prenom','nom','adresse','ville'].forEach(function(id) {
-  document.getElementById(id).addEventListener('blur', function() { valider(id, this.value.trim().length >= 2); });
-});
-document.getElementById('email').addEventListener('blur', function() { valider('email', emailOk(this.value)); });
-document.getElementById('cp').addEventListener('blur', function() { valider('cp', cpOk(this.value.trim())); });
 
-function remplirForm() {
-  var p = document.getElementById('prenom').value.trim();
-  var n = document.getElementById('nom').value.trim();
-  document.getElementById('h-nom').value = p + ' ' + n;
-  document.getElementById('h-email').value = document.getElementById('email').value.trim();
-  document.getElementById('h-adresse').value = document.getElementById('adresse').value.trim();
-  document.getElementById('h-cp').value = document.getElementById('cp').value.trim();
-  document.getElementById('h-ville').value = document.getElementById('ville').value.trim();
+// Validation en temps réel
+['prenom','nom','adresse','ville'].forEach(function(id) {
+  document.getElementById(id).addEventListener('blur', function() { v(id, this.value.trim().length >= 2); });
+});
+document.getElementById('email').addEventListener('blur', function() { v('email', emailRe.test(this.value.trim())); });
+document.getElementById('cp').addEventListener('blur', function() { v('cp', cpRe.test(this.value.trim())); });
+
+function getClient() {
+  return {
+    nom: document.getElementById('prenom').value.trim() + ' ' + document.getElementById('nom').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    adresse: document.getElementById('adresse').value.trim(),
+    cp: document.getElementById('cp').value.trim(),
+    ville: document.getElementById('ville').value.trim()
+  };
 }
 
 function showErr(msg) {
   var n = document.getElementById('notif');
   n.textContent = msg;
   n.className = 'notif err';
-  document.getElementById('f-prenom').scrollIntoView({behavior:'smooth',block:'start'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ─── PAIEMENT STRIPE via n8n ───
-function payerStripeN8N() {
-  if (!formulaireOk()) { showErr('⚠️ Merci de remplir tous les champs correctement.'); return; }
-  remplirForm();
+// ─── STRIPE (via n8n webhook → Stripe Checkout) ───
+function payerStripe() {
+  if (!validate()) {
+    showErr('⚠️ Merci de remplir tous les champs correctement avant de payer.');
+    return;
+  }
+  document.getElementById('notif').className = 'notif';
+  var c = getClient();
+  document.getElementById('h-nom').value = c.nom;
+  document.getElementById('h-email').value = c.email;
+  document.getElementById('h-adresse').value = c.adresse;
+  document.getElementById('h-cp').value = c.cp;
+  document.getElementById('h-ville').value = c.ville;
+  document.getElementById('h-prix').value = PRODUIT.prixCents;
+  document.getElementById('h-vid').value = PRODUIT.cjVid;
+  document.getElementById('h-pname').value = PRODUIT.nom;
   document.getElementById('loading').classList.add('on');
   document.getElementById('stripe-form').submit();
 }
 
-// ─── PAIEMENT STRIPE DIRECT (fallback sans n8n) ───
-function payerStripeLink() {
-  if (!formulaireOk()) { showErr('⚠️ Merci de remplir tous les champs correctement.'); return; }
-  if (!PRODUIT.stripe_link) {
-    alert('Lien de paiement non configuré. Utilisez le bouton principal.');
-    return;
-  }
-  // Sauvegarder les infos client pour le webhook
-  var client = {
-    nom: document.getElementById('prenom').value.trim() + ' ' + document.getElementById('nom').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    adresse: document.getElementById('adresse').value.trim(),
-    cp: document.getElementById('cp').value.trim(),
-    ville: document.getElementById('ville').value.trim(),
-    cj_vid: PRODUIT.cj_vid,
-    product_name: PRODUIT.nom
-  };
-  sessionStorage.setItem('fj_client', JSON.stringify(client));
-  document.getElementById('loading').classList.add('on');
-  // Construire l'URL avec email pré-rempli
-  var url = PRODUIT.stripe_link;
-  if (client.email) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(client.email);
-  window.location.href = url;
-}
-
-// ─── PAYPAL ───
-if (typeof paypal !== 'undefined') {
+// ─── PAYPAL (initialisation après chargement SDK) ───
+function initPayPal() {
+  if (typeof paypal === 'undefined') return;
   paypal.Buttons({
-    style: { layout:'vertical', color:'gold', shape:'rect', height:48 },
-    onClick: function(d, a) {
-      if (!formulaireOk()) { showErr('⚠️ Remplissez d\'abord votre adresse.'); return a.reject(); }
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 48 },
+
+    onClick: function(data, actions) {
+      if (!validate()) {
+        showErr('⚠️ Merci de remplir votre adresse avant de payer via PayPal.');
+        return actions.reject();
+      }
     },
-    createOrder: function(d, a) {
-      return a.order.create({ purchase_units: [{ amount: { value: PRODUIT.prix.toFixed(2), currency_code: 'EUR' }, description: PRODUIT.nom, custom_id: PRODUIT.cj_vid }] });
-    },
-    onApprove: function(d, a) {
-      document.getElementById('loading').classList.add('on');
-      return a.order.capture().then(function(details) {
-        var client = {
-          nom: document.getElementById('prenom').value.trim() + ' ' + document.getElementById('nom').value.trim(),
-          email: document.getElementById('email').value.trim(),
-          adresse: document.getElementById('adresse').value.trim(),
-          cp: document.getElementById('cp').value.trim(),
-          ville: document.getElementById('ville').value.trim(),
-          cj_vid: PRODUIT.cj_vid,
-          product_name: PRODUIT.nom,
-          montant: PRODUIT.prix
-        };
-        fetch('https://smconsulting.app.n8n.cloud/webhook/stripe-commande', {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ body: { type:'paypal.order.completed', data: { object: { id: d.orderID, amount_total: PRODUIT.prix*100, customer_details: { email: client.email, name: client.nom, phone: null, address: { line1: client.adresse, city: client.ville, postal_code: client.cp, country: 'FR', state: 'France' }}, metadata: { cj_vid: client.cj_vid, product_name: client.product_name }}}}})
-        }).catch(console.error);
-        window.location.href = '/success.html?paypal_order=' + d.orderID + '&email=' + encodeURIComponent(client.email);
+
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: PRODUIT.prix.toFixed(2),   // Ex: "49.00" — doit être une string avec 2 décimales
+            currency_code: 'EUR'
+          },
+          description: PRODUIT.nom,
+          custom_id: PRODUIT.cjVid
+        }]
       });
     },
-    onError: function() {
+
+    onApprove: function(data, actions) {
+      document.getElementById('loading').classList.add('on');
+      return actions.order.capture().then(function(details) {
+        var c = getClient();
+        // Notifier n8n pour créer la commande CJdropshipping
+        fetch('https://smconsulting.app.n8n.cloud/webhook/stripe-commande', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            body: {
+              type: 'paypal.order.completed',
+              data: {
+                object: {
+                  id: data.orderID,
+                  amount_total: PRODUIT.prixCents,
+                  customer_details: {
+                    email: c.email,
+                    name: c.nom,
+                    phone: null,
+                    address: {
+                      line1: c.adresse,
+                      city: c.ville,
+                      postal_code: c.cp,
+                      country: 'FR',
+                      state: 'France'
+                    }
+                  },
+                  metadata: {
+                    cj_vid: PRODUIT.cjVid,
+                    product_name: PRODUIT.nom
+                  }
+                }
+              }
+            }
+          })
+        }).catch(function(e) { console.warn('[Flash-Jour] Webhook PayPal non envoyé:', e); });
+        // Redirection vers la page de confirmation
+        window.location.href = '/success.html?paypal_order=' + data.orderID + '&email=' + encodeURIComponent(c.email);
+      });
+    },
+
+    onCancel: function() {
+      // Client a annulé — pas d'erreur à afficher
+      console.log('[Flash-Jour] Paiement PayPal annulé par le client.');
+    },
+
+    onError: function(err) {
       document.getElementById('loading').classList.remove('on');
-      showErr('❌ Erreur PayPal. Veuillez réessayer ou payer par carte.');
+      showErr('❌ Erreur PayPal. Veuillez réessayer ou payer par carte bancaire.');
+      console.error('[Flash-Jour] Erreur PayPal:', err);
     }
-  }).render('#paypal-zone');
+  }).render('#paypal-button-container');
 }
 </script>
 </body>
