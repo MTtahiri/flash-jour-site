@@ -150,9 +150,9 @@ body{background:var(--fond);color:var(--texte);font-family:'DM Sans',sans-serif;
 </form>
 
 <!-- PAYPAL SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=PAYPAL_CLIENT_ID_ICI&currency=EUR&locale=fr_FR" onerror="document.getElementById('paypal-zone').innerHTML='<div style=color:var(--texte-dim);font-size:13px;text-align:center;padding:8px>PayPal indisponible</div>'"></script>
-
-<script>
+<script 
+  src="https://www.paypal.com/sdk/js?client-id=BAAML5u6-eOQcGeX2UWOgXj2aBB67cO19VizpKGmJZU6lJa6f_2M4Vowjd24EjnrvZtRe2ogjfS67DAN7c&components=hosted-buttons&disable-funding=venmo&currency=EUR">
+</script>
 // ─── CONFIG (chargée dynamiquement depuis Airtable via cache) ───
 var PRODUIT = {
   nom: 'Mini Projecteur Pocket 4K',
