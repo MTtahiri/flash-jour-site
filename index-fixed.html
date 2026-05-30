@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+        <meta name="description" content="Flash-Jour : 1 produit par jour au prix le plus bas du net. Ventes flash 24h, sélection par IA, livraison express. Ventilateurs, gadgets, high-tech. Économisez jusqu'à 65% chaque jour.">
+        <meta name="keywords" content="vente flash, bon plan, promotion, produit du jour, flash sale, soldes, prix choc, gadget, ventilateur, high-tech">
+        <meta property="og:title" content="Flash-Jour — 1 Produit, 1 Jour, Prix Imbattable">
+        <meta property="og:description" content="Chaque jour un produit sélectionné par IA au prix le plus bas du net. Offre valable 24h seulement.">
+        <meta property="og:url" content="https://www.flash-jour.com">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Flash-Jour — Ventes Flash IA">
+        <meta name="twitter:description" content="1 produit/jour au prix le plus bas. Offre 24h. Livraison express.">
+        <link rel="canonical" href="https://www.flash-jour.com"
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash-Jour — Ventes Flash : 1 Produit, 1 Jour, Prix Imbattable</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=DM+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --rouge: #FF1744; --rouge-sombre: #C2002F; --fond: #080808; --fond2: #111111; --fond3: #1a1a1a; --texte: #F5F5F0; --texte-dim: #888; --vert: #00E676; --bord: rgba(255,255,255,0.08); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: var(--fond); color: var(--texte); font-family: 'DM Sans', sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+        .urgency-bar { background: var(--rouge); padding: 10px 24px; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 13px; font-weight: 600; color: #fff; }
+        .urgency-bar .dot { width: 8px; height: 8px; background: #fff; border-radius: 50%; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.7); } }
+        .site-header { background: rgba(8,8,8,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--bord); padding: 16px 5%; display: flex; align-items: center; justify-content: space-between; }
+        .site-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--texte); text-decoration: none; }
+        .site-logo span { color: var(--rouge); }
+        .header-tagline { font-size: 12px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .hero { padding: 60px 5%; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; flex: 1; }
+        .badge-jour { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,23,68,.12); border: 1px solid rgba(255,23,68,.3); color: var(--rouge); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+        .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 56px; line-height: 1.05; letter-spacing: 1px; margin-bottom: 16px; }
+        .hero-title .accent { color: var(--rouge); }
+        .hero-desc { font-size: 15px; color: var(--texte-dim); line-height: 1.7; margin-bottom: 28px; }
+        .price-block { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; }
+        .price-flash { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--texte); line-height: 1; }
+        .price-old { font-size: 22px; color: var(--texte-dim); text-decoration: line-through; }
+        .price-badge { background: var(--rouge); color: #fff; font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+        .countdown-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--texte-dim); margin-bottom: 10px; font-weight: 600; }
+        .countdown { display: flex; gap: 8px; margin-bottom: 28px; }
+        .cdown-unit { background: var(--fond2); border: 1px solid var(--bord); border-radius: 8px; padding: 12px 16px; text-align: center; min-width: 66px; }
+        .cdown-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--texte); line-height: 1; display: block; }
+        .cdown-num.red { color: var(--rouge); }
+        .cdown-label-s { font-size: 10px; color: var(--texte-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; display: block; }
+        
+        /* LIEN VERS TA PAGE COMMANDE */
+        .cta-btn { display: block; text-align: center; width: 100%; background: var(--rouge); color: #fff; border: none; padding: 18px 32px; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; cursor: pointer; text-decoration: none; transition: all .2s; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(255,23,68,.2); }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,23,68,.4); }
+        
+        .reassurance { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .reassurance-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--texte-dim); }
+        .reassurance-item .check { color: var(--vert); }
+        .hero-right { position: relative; }
+        .product-img-wrap { background: var(--fond2); border: 1px solid var(--bord); border-radius: 16px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-placeholder { font-size: 120px; animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        .site-footer { border-top: 1px solid var(--bord); padding: 24px 5%; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--texte-dim); background: var(--fond2); margin-top: 40px; }
+        @media (max-width: 768px) { .hero { grid-template-columns: 1fr; padding: 40px 24px; } .hero-title { font-size: 42px; } .product-img-wrap { aspect-ratio: 1.2; } }
+    </style>
+</head>
+<body>
+    <div class="urgency-bar"><div class="dot"></div>🔥 OFFRE DU JOUR UNIQUE — DISPONIBLE 24H SEULEMENT</div>
+    <header class="site-header">
+        <a href="index.html" class="site-logo">FLASH<span>.</span>JOUR</a>
+        <div class="header-tagline">1 Produit, 1 Jour, Prix Imbattable</div>
+    </header>
+    <main class="hero">
+        <div class="hero-left">
+            <div class="badge-jour">🔴 EN DIRECT EN CE MOMENT</div>
+            <h1 class="hero-title">Ventilateur de Cou <span class="accent">Sans Lame</span> 4000mAh</h1>
+            <p class="Ventilateur de cou sans pales, blanc, style luxueux, 3 vitesses, batterie rechargeable USB 2000-4000 mAh, sortie d'air rétractable, autonomie de 3 à 6 heures.</p>
+            <div class="countdown-label">⏰ Fin de l'offre imminente :</div>
+            <div class="countdown">
+                <div class="cdown-unit"><span class="cdown-num red" id="d-hours">00</span><span class="cdown-label-s">Heures</span></div>
+                <div class="cdown-sep">:</div>
+                <div class="cdown-unit"><span class="cdown-num" id="d-mins">00</span><span class="cdown-label-s">Minutes</span></div>
+                <div class="cdown-sep">:</div>
+                <div class="cdown-unit"><span class="cdown-num" id="d-secs">00</span><span class="cdown-label-s">Secondes</span></div>
+            </div>
+            <div class="price-block">
+                <div class="price-flash">17€</div>
+                <div class="price-old">35€</div>
+                <div class="price-badge">−51% IMMÉDIAT</div>
+            </div>
+            <div class="stock-bar-wrap">
+                <div class="stock-label"><span>Vitesse de commande</span><span class="alert">⚡ Dernières unités !</span></div>
+                <div class="stock-bar"><div class="stock-fill"></div></div>
+            </div>
+            
+            <a href="https://buy.stripe.com/8x27sK8id2hada6aKgfMA01" class="cta-btn">⚡ PROFITER DE L'OFFRE FLASH — 17€</a>
+            
+            <div class="reassurance">
+                <span class="reassurance-item"><span class="check">✓</span> Paiement sécurisé SSL</span>
+                <span class="reassurance-item"><span class="check">✓</span> Expédition Express</span>
+            </div>
+        </div>
+        <div class="hero-right"><div class="product-img-wrap"><img src="ventilateur-main.jpg" alt="Ventilateur de Cou Sans Lame 4000mAh" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block"></div></div>
+    </main>
+    <footer class="site-footer"><span>© 2026 Flash-Jour</span><span>Infrastructure Ultra-Fluide</span></footer>
+    <script>
+        function updateCountdown() {
+            const now = new Date(); const midnight = new Date(now); midnight.setHours(24,0,0,0); const diff = Math.max(0, midnight - now);
+            const h = String(Math.floor(diff / 3600000)).padStart(2,'0'); const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2,'0'); const s = String(Math.floor((diff % 60000) / 1000)).padStart(2,'0');
+            document.getElementById('d-hours').textContent = h; document.getElementById('d-mins').textContent = m; document.getElementById('d-secs').textContent = s;
+        } updateCountdown(); setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
