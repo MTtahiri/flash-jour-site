@@ -1,15 +1,15 @@
     <!DOCTYPE html>
-    <meta property="og:image" content="website">
-    <meta property="og:image" content="https://m.media-amazon.com/images/I/618PlAp-kgL._AC_UL600_.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://www.flash-jour.com/alarme-1.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Flash-Jour — Alarme SOS Porte-Clé 130dB | 19,90€">
+    <meta name="twitter:title" content="Flash-Jour — Alarme SOS Porte-Clé 120dB | 19,90€">
     <meta name="twitter:description" content="1 produit/jour au prix le plus bas. Offre 24h. Livraison express.">
     <link rel="canonical" href="https://www.flash-jour.com">
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://buy.stripe.com">
     <link rel="dns-prefetch" href="https://buy.stripe.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flash-Jour — Alarme Personnelle SOS Porte-Clé 130dB | 19,90€ Seulement</title>
+    <title>Flash-Jour — Alarme Personnelle SOS Porte-Clé 120dB | 19,90€ Seulement</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root { --rouge: #FF1744; --rouge-sombre: #C2002F; --fond: #080808; --fond2: #111111; --fond3: #1a1a1a; --texte: #F5F5F0; --texte-dim: #888; --vert: #00E676; --bord: rgba(255,255,255,0.08); }
@@ -79,8 +79,8 @@
         <!-- GAUCHE : infos produit -->
         <div class="hero-left">
             <div class="badge-jour">🔴 EN DIRECT EN CE MOMENT</div>
-            <h1 class="hero-title">ALARME SOS <span class="accent">personnelle</span>porte-clé</h1>
-            <p class="hero-desc">Alarme SOS 130dB, activation en 1 seconde. LED stroboscopique d'urgence intégrée. Mousqueton inclus. Rechargeable USB-C. Légère et compacte — toujours sur vous.</p>
+            <h1 class="hero-title">ALARME SOS <span class="accent">PERSONNELLE</span> PORTE-CLÉ 120dB</h1>
+            <p class="hero-desc">Alarme SOS 120dB + Lampe LED 130LM. Activation en 1 seconde. Mousqueton inclus. Rechargeable USB-C. Compacte 8,5cm × 3,7cm — toujours sur vous.</p>
 
             <div class="countdown-label">⏰ Fin de l'offre imminente :</div>
             <div class="countdown">
@@ -108,11 +108,11 @@
                 <span class="reassurance-item"><span class="check">✓</span> Paiement sécurisé SSL</span>
                 <span class="reassurance-item"><span class="check">✓</span> Expédition Express</span>
             </div>
-        <!-- DROITE : carousel 4 images -->
-            <div class="carousel">
+        </div>        <!-- DROITE : carousel 4 images -->
+            <div class="hero-right"><div class="slider-wrap" id="slider"><div class="slides-track" id="slides-track">
                 <button class="slider-btn slider-prev" id="btn-prev" aria-label="Précédent">&#8249;</button>
                 <button class="slider-btn slider-next" id="btn-next" aria-label="Suivant">&#8250;</button>
-                <div class="slider-dots" id="slider-dots">
+                </div><button class="slider-btn slider-prev" id="btn-prev" aria-label="Précédent">&#8249;</button><button class="slider-btn slider-next" id="btn-next" aria-label="Suivant">&#8250;</button><div class="slider-dots" id="slider-dots"><button class="dot active" data-idx="0"></button><button class="dot" data-idx="1"></button><button class="dot" data-idx="2"></button><button class="dot" data-idx="3"></button>
                     <div class="slide"><img src="alarme-1.png" alt="Alarme SOS Porte-Clé 120dB" loading="lazy"></div>
                     <div class="slide"><img src="alarme-2.jpg" alt="Alarme SOS LED 130LM allumée" loading="lazy"></div>
                     <div class="slide"><img src="alarme-3.jpg" alt="Alarme SOS boutons SOS et lampe" loading="lazy"></div>
@@ -129,7 +129,7 @@
     </footer>
 
     <script>
-        // ── CAROUSEL ──
+        // ── CAROUSEL ──        (function(){var t=document.getElementById('slides-track');var s=document.querySelectorAll('.slide');if(t&&s.length>0&&!t.querySelector('.slide')){s.forEach(function(sl){t.appendChild(sl);});}})();
         var current = 0;
         var total = 4;
         var autoTimer;
