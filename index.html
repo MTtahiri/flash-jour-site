@@ -109,16 +109,24 @@
                 <span class="reassurance-item"><span class="check">✓</span> Expédition Express</span>
             </div>
         </div>        <!-- DROITE : carousel 4 images -->
-            <div class="hero-right"><div class="slider-wrap" id="slider"><div class="slides-track" id="slides-track">
-                <button class="slider-btn slider-prev" id="btn-prev" aria-label="Précédent">&#8249;</button>
-                <button class="slider-btn slider-next" id="btn-next" aria-label="Suivant">&#8250;</button>
-                </div><button class="slider-btn slider-prev" id="btn-prev" aria-label="Précédent">&#8249;</button><button class="slider-btn slider-next" id="btn-next" aria-label="Suivant">&#8250;</button><div class="slider-dots" id="slider-dots"><button class="dot active" data-idx="0"></button><button class="dot" data-idx="1"></button><button class="dot" data-idx="2"></button><button class="dot" data-idx="3"></button>
-                    <div class="slide"><img src="alarme-1.png" alt="Alarme SOS Porte-Clé 120dB" loading="lazy"></div>
-                    <div class="slide"><img src="alarme-2.jpg" alt="Alarme SOS LED 130LM allumée" loading="lazy"></div>
-                    <div class="slide"><img src="alarme-3.jpg" alt="Alarme SOS boutons SOS et lampe" loading="lazy"></div>
-                    <div class="slide"><img src="alarme-4.jpg" alt="Alarme SOS dimensions 8.5cm x 3.7cm" loading="lazy"></div>
+                        <div class="hero-right">
+                <div class="slider-wrap" id="slider">
+                    <div class="slides-track" id="slides-track">
+                        <div class="slide"><img src="alarme-1.png" alt="Alarme SOS Porte-Clé 120dB" loading="lazy"></div>
+                        <div class="slide"><img src="alarme-2.jpg" alt="Alarme SOS LED 130LM allumée" loading="lazy"></div>
+                        <div class="slide"><img src="alarme-3.jpg" alt="Alarme SOS boutons SOS et lampe" loading="lazy"></div>
+                        <div class="slide"><img src="alarme-4.jpg" alt="Alarme SOS dimensions 8.5cm x 3.7cm" loading="lazy"></div>
+                    </div>
+                    <button class="slider-btn slider-prev" id="btn-prev" aria-label="Précédent">&#8249;</button>
+                    <button class="slider-btn slider-next" id="btn-next" aria-label="Suivant">&#8250;</button>
+                    <div class="slider-dots" id="slider-dots">
+                        <button class="dot active" data-idx="0"></button>
+                        <button class="dot" data-idx="1"></button>
+                        <button class="dot" data-idx="2"></button>
+                        <button class="dot" data-idx="3"></button>
+                    </div>
+                    <div class="slider-badge">⚡ 4 visuels</div>
                 </div>
-                <div class="slider-badge">⚡ 4 visuels</div>
             </div>
         </div>
     </main>
@@ -129,7 +137,7 @@
     </footer>
 
     <script>
-        // ── CAROUSEL ──        (function(){var t=document.getElementById('slides-track');var s=document.querySelectorAll('.slide');if(t&&s.length>0&&!t.querySelector('.slide')){s.forEach(function(sl){t.appendChild(sl);});}})();
+        // ── CAROUSEL ──
         var current = 0;
         var total = 4;
         var autoTimer;
