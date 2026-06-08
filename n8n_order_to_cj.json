@@ -1,0 +1,76 @@
+{
+  "name": "Flash-Jour - Order to CJdropshipping",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stripe-order-relay",
+        "options": {}
+      },
+      "name": "Webhook Relay",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Transformation des données pour l'API CJ\nconst order = items[0].json;\nreturn [{\n  json: {\n    \"orderNumber\": \"FJ-\" + Date.now(),\n    \"shippingAddress\": {\n      \"firstName\": order.firstName,\n      \"lastName\": order.lastName,\n      \"addressLine1\": order.address,\n      \"city\": order.city,\n      \"countryCode\": \"FR\",\n      \"zipCode\": order.cp\n    },\n    \"products\": [{\n      \"vid\": order.cjVid || \"DEFAULT_VID\",\n      \"quantity\": 1\n    }]\n  }\n}];"
+      },
+      "name": "Map to CJ API",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://developers.cjdropshipping.com/api2.0/v1/shopping/order/createOrder",
+        "authentication": "headerAuth",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "CJ-Access-Token",
+              "value": "={{$node[\"Config\"].json[\"CJ_TOKEN\"]}}"
+            }
+          ]
+        },
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{JSON.stringify($node[\"Map to CJ API\"].json)}}"
+            }
+          ]
+        }
+      },
+      "name": "Create CJ Order",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [650, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Relay": {
+      "main": [
+        [
+          {
+            "node": "Map to CJ API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to CJ API": {
+      "main": [
+        [
+          {
+            "node": "Create CJ Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
