@@ -1,51 +1,73 @@
 /**
- * Relay API for Flash-Jour Orders
- * Purpose: Securely forward order data from the frontend to n8n.
- * Security: Validates an internal API key and uses server-side environment variables.
+ * Relay API for Flash-Jour Orders (Secure Stripe Webhook Handler)
+ * Purpose: Handle incoming Stripe webhooks and forward to n8n securely.
  */
+
+import { buffer } from 'micro';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { orderData, apiKey } = req.body;
+  const buf = await buffer(req);
+  const sig = req.headers['stripe-signature'];
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-  // 1. Validate the internal API key to prevent unauthorized access to the relay
-  const INTERNAL_API_KEY = process.env.INTERNAL_RELAY_KEY;
-  if (!apiKey || apiKey !== INTERNAL_API_KEY) {
-    return res.status(401).json({ error: 'Unauthorized: Invalid relay key' });
-  }
-
-  // 2. Validate mandatory order data
-  if (!orderData || !orderData.email || !orderData.total) {
-    return res.status(400).json({ error: 'Missing mandatory order data' });
-  }
+  let event;
 
   try {
-    // 3. Forward the data to the secret n8n webhook URL
-    const N8N_WEBHOOK_URL = process.env.N8N_ORDERS_WEBHOOK_URL;
-
-    const response = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-RELAY-AUTH': INTERNAL_API_KEY // Extra layer for n8n to verify source
-      },
-      body: JSON.stringify(orderData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`n8n responded with status ${response.status}`);
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Order successfully transmitted to automation pipeline.'
-    });
-
-  } catch (error) {
-    console.error('Order Relay Error:', error);
-    return res.status(500).json({ error: 'Internal server error during order processing.' });
+    event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
+  } catch (err) {
+    console.error(`Webhook Error: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
+
+  // Handle the event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Forward to n8n
+    try {
+      const N8N_WEBHOOK_URL = process.env.N8N_ORDERS_WEBHOOK_URL;
+      const N8N_API_KEY = process.env.N8N_WEBHOOK_API_KEY;
+
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-N8N-API-KEY': N8N_API_KEY
+        },
+        body: JSON.stringify({
+          order_id: session.id,
+          email: session.customer_details.email,
+          amount: session.amount_total / 100,
+          currency: session.currency,
+          customer_name: session.customer_details.name,
+          shipping_address: session.shipping_details,
+          // Mapping SKU par défaut pour le produit actif
+          sku: 'CJJD274007001AZ',
+          timestamp: new Date().toISOString()
+        }),
+      });
+
+      if (!response.ok) throw new Error('n8n forwarding failed');
+
+      return res.status(200).json({ received: true });
+    } catch (error) {
+      console.error('Relay Error:', error);
+      return res.status(500).json({ error: 'Internal server error forwarding to n8n' });
+    }
+  }
+
+  res.json({ received: true });
 }

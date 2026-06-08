@@ -1,44 +1,104 @@
 {
-  "name": "Rh-prospects - Candidate to CRM",
+  "name": "RH-Prospects - Candidate & Audit to Airtable",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "candidate-submission",
-        "options": {}
+        "path": "rh-candidate-relay",
+        "options": {},
+        "authentication": "headerAuth",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "={{$env.N8N_WEBHOOK_API_KEY}}"
+            }
+          ]
+        }
       },
-      "name": "Webhook Candidate",
+      "name": "Candidate Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [250, 300]
+      "position": [100, 300]
     },
     {
       "parameters": {
-        "resource": "contact",
-        "operation": "upsert",
-        "email": "={{$node[\"Webhook Candidate\"].json[\"email\"]}}",
-        "additionalFields": {
-          "firstName": "={{$node[\"Webhook Candidate\"].json[\"firstName\"]}}",
-          "lastName": "={{$node[\"Webhook Candidate\"].json[\"lastName\"]}}",
-          "phone": "={{$node[\"Webhook Candidate\"].json[\"phone\"]}}",
-          "customProperties": {
-            "cv_url": "={{$node[\"Webhook Candidate\"].json[\"cvUrl\"]}}",
-            "source": "Rh-prospects"
-          }
+        "operation": "append",
+        "application": "={{$env.AIRTABLE_BASE_ID}}",
+        "table": "Leads",
+        "options": {},
+        "fields": [
+          "Email",
+          "Nom",
+          "Type",
+          "Score IA",
+          "Message",
+          "Source"
+        ]
+      },
+      "name": "Airtable Lead Sync",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [350, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$node[\"Candidate Webhook\"].json[\"ia_score\"]}}",
+              "operation": "larger",
+              "value2": 80
+            }
+          ]
         }
       },
-      "name": "Upsert CRM Contact",
-      "type": "n8n-nodes-base.hubspot",
+      "name": "High Value Lead?",
+      "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [500, 300]
+      "position": [550, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "channel": "C0123456789",
+        "text": "=🚀 *Nouveau Lead High Value !*\n\n*Nom:* {{$node[\"Candidate Webhook\"].json[\"lastName\"]}}\n*Type:* {{$node[\"Candidate Webhook\"].json[\"submission_type\"]}}\n*Score IA:* {{$node[\"Candidate Webhook\"].json[\"ia_score\"]}}%\n*Message:* {{$node[\"Candidate Webhook\"].json[\"message\"]}}",
+        "options": {}
+      },
+      "name": "Slack Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [750, 200]
     }
   ],
   "connections": {
-    "Webhook Candidate": {
+    "Candidate Webhook": {
       "main": [
         [
           {
-            "node": "Upsert CRM Contact",
+            "node": "Airtable Lead Sync",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable Lead Sync": {
+      "main": [
+        [
+          {
+            "node": "High Value Lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "High Value Lead?": {
+      "main": [
+        [
+          {
+            "node": "Slack Notification",
             "type": "main",
             "index": 0
           }
