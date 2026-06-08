@@ -1,0 +1,127 @@
+{
+  "name": "Flash-Jour - Flux C (Mass Video Sales)",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://developers.cjdropshipping.com/api2.0/v1/product/list",
+        "authentication": "headerAuth",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "CJ-Access-Token",
+              "value": "VOTRE_TOKEN"
+            }
+          ]
+        },
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "pageNum",
+              "value": "1"
+            },
+            {
+              "name": "pageSize",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Get Trending Products",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu es un expert en e-commerce viral.\n\nPRODUIT : {{$node[\"Get Trending Products\"].json[\"productName\"]}}\nPRIX : {{$node[\"Get Trending Products\"].json[\"productPrice\"]}}\n\nTACHE :\n1. Rédige un script de voix off de 15 secondes ultra-dynamique.\n2. Inclus un fort appel à l'action.\n3. Rédige les hashtags TikTok.\n\nRETOURNE CE JSON :\n{\n  \"script\": \"...\",\n  \"hashtags\": \"#...\"\n}"
+      },
+      "id": "2",
+      "name": "Sales Script IA",
+      "type": "n8n-nodes-base.basicLlmChain",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20240620"
+      },
+      "id": "3",
+      "name": "Claude AI",
+      "type": "n8n-nodes-base.anthropicChatModel",
+      "typeVersion": 1,
+      "position": [250, 500]
+    },
+    {
+      "parameters": {
+        "text": "={{JSON.parse($input.item.json.text).script}}",
+        "voice": "alloy"
+      },
+      "id": "4",
+      "name": "OpenAI TTS",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "title": "=Alerte Produit : {{$node[\"Get Trending Products\"].json[\"productName\"]}}",
+        "videoBinaryPropertyName": "data",
+        "description": "={{JSON.parse($node[\"Sales Script IA\"].json[\"text\"]).hashtags}}"
+      },
+      "id": "5",
+      "name": "YouTube Shorts",
+      "type": "n8n-nodes-base.youtube",
+      "typeVersion": 1,
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Get Trending Products": {
+      "main": [
+        [
+          {
+            "node": "Sales Script IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude AI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Sales Script IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Script IA": {
+      "main": [
+        [
+          {
+            "node": "OpenAI TTS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI TTS": {
+      "main": [
+        [
+          {
+            "node": "YouTube Shorts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
