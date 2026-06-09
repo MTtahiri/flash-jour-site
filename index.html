@@ -2,6 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WENM3Z90HL"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-WENM3Z90HL');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash-Jour — Ventilateur de Cou Sans Lame — Édition Luxe | 34,90€ Seulement</title>
     <meta property="og:type" content="website">
@@ -166,7 +174,24 @@
             .cibles-grid { grid-template-columns: 1fr; }
         }
     </style>
-</head>
+    <!-- TikTok Pixel -->
+    <script>
+      !function (w, d, t) {
+        w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
+        ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
+        ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
+        for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);
+        ttq.instance=function(t){for(var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e};
+        ttq.load=function(e,n){var i="https://analytics.tiktok.com/i18n/pixel/events.js";
+        ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=i,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};
+        var o=document.createElement("script");o.type="text/javascript",o.async=!0,o.src=i+"?sdkid="+e+"&lib="+t;
+        var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(o,a)};
+        ttq.load('7649158619012612116');
+        ttq.page();
+      }(window, document, 'ttq');
+    </script>
+    <!-- Fin TikTok Pixel -->
+  </head>
 <body>
 
     <div class="urgency-bar"><div class="dot"></div>🔥 OFFRE DU JOUR UNIQUE — DISPONIBLE 24H SEULEMENT</div>
@@ -498,6 +523,21 @@
             if (window.scrollY > 400) { sticky.classList.add('visible'); }
             else { sticky.classList.remove('visible'); }
         }, { passive: true });
+    </script>
+
+    <script>
+      // TikTok — ViewContent (visite page produit)
+      window.addEventListener('load', function() {
+        if (window.ttq) {
+          ttq.track('ViewContent', {
+            content_name: 'Ventilateur de Cou Sans Lame',
+            content_id: 'CJJD274007001AZ',
+            content_type: 'product',
+            value: 34.90,
+            currency: 'EUR'
+          });
+        }
+      });
     </script>
 </body>
 </html>
