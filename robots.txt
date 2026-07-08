@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /espace-membre/
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://www.flash-jour.com/sitemap.xml
