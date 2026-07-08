@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rejoindre le réseau Flash-Jour — Candidature B2B fruits légumes</title>
+  <meta name="description" content="Déposez votre candidature pour rejoindre Flash-Jour, le réseau B2B privé fruits et légumes. Accès sur dossier, validation sous 48h." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.flash-jour.com/rejoindre/" />
+  <link rel="alternate" hreflang="fr"        href="https://www.flash-jour.com/rejoindre/" />
+  <link rel="alternate" hreflang="en"        href="https://www.flash-jour.com/en/join/" />
+  <link rel="alternate" hreflang="ar"        href="https://www.flash-jour.com/ar/rejoindre/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.flash-jour.com/rejoindre/" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <style>
+    .form-wrap { max-width: 640px; margin: 0 auto; }
+    .step-indicator { display: flex; gap: .5rem; margin-bottom: 2rem; }
+    .step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); }
+    .step.active { background: var(--gold); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/" class="logo">Flash-Jour</a>
+      <ul>
+        <li><a href="/acheteurs/">Acheteurs</a></li>
+        <li><a href="/producteurs/">Producteurs</a></li>
+        <li><a href="/comment-ca-marche/">Comment ça marche</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/rejoindre/" class="cta" aria-current="page">Rejoindre</a></li>
+      </ul>
+      <div class="lang-switch"><a href="/en/join/">EN</a> | <a href="/ar/rejoindre/">AR</a></div>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>Déposez votre candidature</h1>
+      <p>Accès sur dossier. Validation sous 48h. Réseau privé professionnel.</p>
+    </div>
+  </div>
+
+  <main>
+    <section class="form-wrap">
+
+      <!-- Sélection type -->
+      <p style="font-weight:600; margin-bottom:.8rem;">Je suis :</p>
+      <div class="type-select">
+        <div class="type-btn" id="btn-acheteur" onclick="selectType('acheteur')">
+          <strong>Acheteur</strong>
+          <span>Importateur, grossiste, distributeur</span>
+        </div>
+        <div class="type-btn" id="btn-producteur" onclick="selectType('producteur')">
+          <strong>Producteur</strong>
+          <span>Exportateur, producteur, coopérative</span>
+        </div>
+      </div>
+
+      <!-- Formulaire (Tally embed ou natif) -->
+      <!-- OPTION A : Tally embed (remplacer src par votre URL Tally) -->
+      <!--
+      <iframe data-tally-src="https://tally.so/embed/VOTRE_ID?transparentBackground=1&type={{TYPE}}"
+              width="100%" height="500" frameborder="0" title="Candidature Flash-Jour"></iframe>
+      <script async src="https://tally.so/widgets/embed.js"></script>
+      -->
+
+      <!-- OPTION B : Formulaire HTML natif (fallback si Tally non configuré) -->
+      <form id="candidature-form" action="https://formspree.io/f/VOTRE_ID" method="POST">
+        <input type="hidden" name="type_membre" id="type_membre" value="" />
+        <input type="hidden" name="_subject" value="Nouvelle candidature Flash-Jour" />
+
+        <div class="form-group">
+          <label for="nom">Nom complet *</label>
+          <input type="text" id="nom" name="nom" required placeholder="Prénom Nom" />
+        </div>
+        <div class="form-group">
+          <label for="entreprise">Entreprise *</label>
+          <input type="text" id="entreprise" name="entreprise" required placeholder="Nom de votre société" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email professionnel *</label>
+          <input type="email" id="email" name="email" required placeholder="vous@entreprise.com" />
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">WhatsApp (avec indicatif pays)</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+33 6 00 00 00 00" />
+        </div>
+        <div class="form-group">
+          <label for="pays">Pays *</label>
+          <select id="pays" name="pays" required>
+            <option value="">— Sélectionner —</option>
+            <option>France</option><option>Belgique</option><option>Suisse</option>
+            <option>Espagne</option><option>Italie</option><option>Allemagne</option>
+            <option>Pays-Bas</option><option>Maroc</option><option>Sénégal</option>
+            <option>Tunisie</option><option>Égypte</option><option>Turquie</option>
+            <option>Pérou</option><option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="produits">Produits concernés *</label>
+          <input type="text" id="produits" name="produits" required placeholder="ex: mangues, agrumes, tomates cerises..." />
+        </div>
+        <div class="form-group">
+          <label for="message">Présentez votre activité en quelques lignes *</label>
+          <textarea id="message" name="message" required placeholder="Votre activité, vos volumes approximatifs, ce que vous recherchez..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Envoyer ma candidature →</button>
+        <p class="form-note">Vos données sont confidentielles. Aucun partage sans votre accord. Réponse sous 48h.</p>
+      </form>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Flash-Jour — <a href="mailto:contact@flash-jour.com">contact@flash-jour.com</a></p>
+    <nav><a href="/mentions-legales/">Mentions légales</a><a href="/confidentialite/">Confidentialité</a></nav>
+  </footer>
+
+  <script>
+    function selectType(type) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + type).classList.add('active');
+      document.getElementById('type_membre').value = type;
+    }
+    // Auto-select from URL param
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('type')) selectType(params.get('type'));
+  </script>
+</body>
+</html>
