@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply to join Flash-Jour — B2B fresh produce network</title>
+  <meta name="description" content="Apply to join Flash-Jour, the private B2B fresh produce network. Application-based access. Reviewed within 48 hours." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.flash-jour.com/en/join/" />
+  <link rel="alternate" hreflang="fr" href="https://www.flash-jour.com/rejoindre/" />
+  <link rel="alternate" hreflang="en" href="https://www.flash-jour.com/en/join/" />
+  <link rel="alternate" hreflang="ar" href="https://www.flash-jour.com/ar/rejoindre/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.flash-jour.com/rejoindre/" />
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/en/" class="logo">Flash-Jour</a>
+      <ul>
+        <li><a href="/en/acheteurs/">Buyers</a></li>
+        <li><a href="/en/producteurs/">Producers</a></li>
+        <li><a href="/en/how-it-works/">How it works</a></li>
+        <li><a href="/en/faq/">FAQ</a></li>
+        <li><a href="/en/join/" class="cta" aria-current="page">Join</a></li>
+      </ul>
+      <div class="lang-switch"><a href="/rejoindre/">FR</a> | <a href="/ar/rejoindre/">AR</a></div>
+    </nav>
+  </header>
+  <div class="page-hero">
+    <div class="container">
+      <h1>Submit your application</h1>
+      <p>Application-based access. Reviewed within 48 hours. Professional private network.</p>
+    </div>
+  </div>
+  <main>
+    <section style="max-width:640px; margin:0 auto;">
+      <div class="type-select">
+        <div class="type-btn" id="btn-buyer" onclick="selectType('buyer')">
+          <strong>Buyer</strong><span>Importer, wholesaler, distributor</span>
+        </div>
+        <div class="type-btn" id="btn-producer" onclick="selectType('producer')">
+          <strong>Producer</strong><span>Exporter, grower, cooperative</span>
+        </div>
+      </div>
+      <form action="https://formspree.io/f/VOTRE_ID" method="POST">
+        <input type="hidden" name="type_membre" id="type_member" value="" />
+        <input type="hidden" name="_subject" value="New Flash-Jour application" />
+        <div class="form-group"><label>Full name *</label><input type="text" name="name" required placeholder="First Last" /></div>
+        <div class="form-group"><label>Company *</label><input type="text" name="company" required /></div>
+        <div class="form-group"><label>Professional email *</label><input type="email" name="email" required /></div>
+        <div class="form-group"><label>WhatsApp (with country code)</label><input type="tel" name="whatsapp" placeholder="+1 555 000 0000" /></div>
+        <div class="form-group"><label>Country *</label><select name="country" required><option value="">— Select —</option><option>France</option><option>Belgium</option><option>Netherlands</option><option>Germany</option><option>Spain</option><option>UK</option><option>Morocco</option><option>Senegal</option><option>Egypt</option><option>Turkey</option><option>Peru</option><option>Other</option></select></div>
+        <div class="form-group"><label>Products *</label><input type="text" name="products" required placeholder="e.g. mangoes, citrus, tomatoes..." /></div>
+        <div class="form-group"><label>Tell us about your business *</label><textarea name="message" required placeholder="Your activity, approximate volumes, what you are looking for..."></textarea></div>
+        <button type="submit" class="btn-submit">Submit my application →</button>
+        <p class="form-note">Your data is confidential. No sharing without your consent. Response within 48h.</p>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 Flash-Jour — <a href="mailto:contact@flash-jour.com">contact@flash-jour.com</a></p>
+  </footer>
+  <script>
+    function selectType(t){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+t).classList.add('active');document.getElementById('type_membre').value=t;}
+    const p=new URLSearchParams(window.location.search);if(p.get('type'))selectType(p.get('type'));
+  </script>
+</body>
+</html>
