@@ -1,0 +1,258 @@
+{
+  "name": "Machine à Visibilité - Flux A (V6 - Final Robust)",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "folderId": "VOTRE_FOLDER_ID_DRIVE",
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Google Drive Trigger",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [-400, 240]
+    },
+    {
+      "parameters": {
+        "fileId": "={{$node[\"Google Drive Trigger\"].json[\"id\"]}}",
+        "options": {}
+      },
+      "id": "2",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [-200, 240]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Google Drive Trigger\"].json[\"mimeType\"]}}",
+              "operation": "contains",
+              "value2": "video"
+            }
+          ]
+        }
+      },
+      "id": "3",
+      "name": "Is Video?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [20, 240]
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "binaryPropertyName": "data"
+      },
+      "id": "4",
+      "name": "Extract Content",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [220, 360]
+    },
+    {
+      "parameters": {
+        "mode": "chooseFirst"
+      },
+      "id": "5",
+      "name": "Unify Source",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [440, 240]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu es un expert en Growth Hacking.\n\nFICHIER : {{$node[\"Google Drive Trigger\"].json[\"name\"]}}\nCONTENU : {{ $node[\"Unify Source\"].json[\"text\"] || \"Ceci est une vidéo brute.\" }}\n\nTACHE :\n1. Rédige un post X percutant.\n2. Rédige un Titre YouTube Shorts + Description SEO.\n3. Rédige une description TikTok.\n\nRETOURNE UNIQUEMENT CE JSON :\n{\n  \"x_post\": \"...\",\n  \"yt_title\": \"...\",\n  \"yt_desc\": \"...\",\n  \"tt_desc\": \"...\"\n}"
+      },
+      "id": "6",
+      "name": "Claude AI Agent",
+      "type": "n8n-nodes-base.basicLlmChain",
+      "typeVersion": 1,
+      "position": [660, 240]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20240620"
+      },
+      "id": "7",
+      "name": "Claude Sonnet 3.5",
+      "type": "n8n-nodes-base.anthropicChatModel",
+      "typeVersion": 1,
+      "position": [660, 440]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.text;\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\nreturn JSON.parse(match ? match[0] : \"{}\");"
+      },
+      "id": "8",
+      "name": "Safe JSON Parser",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 240]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "mergeByPosition"
+      },
+      "id": "9",
+      "name": "Re-attach Binary",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1100, 340]
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"Safe JSON Parser\"].json[\"x_post\"]}}",
+        "additionalFields": {}
+      },
+      "id": "10",
+      "name": "Post to X",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 1,
+      "position": [1320, 200]
+    },
+    {
+      "parameters": {
+        "title": "={{$node[\"Safe JSON Parser\"].json[\"yt_title\"]}}",
+        "videoBinaryPropertyName": "data",
+        "description": "={{$node[\"Safe JSON Parser\"].json[\"yt_desc\"]}}",
+        "options": {}
+      },
+      "id": "11",
+      "name": "YouTube Upload",
+      "type": "n8n-nodes-base.youtube",
+      "typeVersion": 1,
+      "position": [1320, 440]
+    }
+  ],
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Is Video?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Re-attach Binary",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Is Video?": {
+      "main": [
+        [
+          {
+            "node": "Unify Source",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Content": {
+      "main": [
+        [
+          {
+            "node": "Unify Source",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Unify Source": {
+      "main": [
+        [
+          {
+            "node": "Claude AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude Sonnet 3.5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Claude AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Safe JSON Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Safe JSON Parser": {
+      "main": [
+        [
+          {
+            "node": "Re-attach Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Re-attach Binary": {
+      "main": [
+        [
+          {
+            "node": "Post to X",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YouTube Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

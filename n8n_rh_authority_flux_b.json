@@ -1,0 +1,117 @@
+{
+  "name": "Rh-prospects - Flux B (News to Authority)",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://techcrunch.com/category/artificial-intelligence/feed/"
+      },
+      "id": "1",
+      "name": "RSS Feed AI",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Tu es un expert en stratégie RH et IA.\n\nACTUALITÉ : {{$node[\"RSS Feed AI\"].json[\"title\"]}}\nDESCRIPTION : {{$node[\"RSS Feed AI\"].json[\"contentSnippet\"]}}\n\nTACHE :\n1. Évalue si cette news est pertinente pour des recruteurs (0 à 10).\n2. Si > 7, rédige un post LinkedIn de 150 mots qui explique l'impact sur l'emploi.\n3. Rédige un tweet résumé de 240 car.\n\nRETOURNE CE JSON :\n{\n  \"score\": 0,\n  \"linkedin_post\": \"...\",\n  \"x_post\": \"...\"\n}"
+      },
+      "id": "2",
+      "name": "Analyze & Write",
+      "type": "n8n-nodes-base.basicLlmChain",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-5-sonnet-20240620"
+      },
+      "id": "3",
+      "name": "Claude AI",
+      "type": "n8n-nodes-base.anthropicChatModel",
+      "typeVersion": 1,
+      "position": [250, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.item.json.text;\nconst match = raw.match(/\\{[\\s\\S]*\\}/);\nconst data = JSON.parse(match ? match[0] : '{\"score\":0}');\nreturn data.score > 7 ? data : null;"
+      },
+      "id": "4",
+      "name": "Filter High Impact",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"Filter High Impact\"].json[\"linkedin_post\"]}}"
+      },
+      "id": "5",
+      "name": "LinkedIn Post",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [750, 200]
+    },
+    {
+      "parameters": {
+        "text": "={{$node[\"Filter High Impact\"].json[\"x_post\"]}}"
+      },
+      "id": "6",
+      "name": "X Post",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 1,
+      "position": [750, 400]
+    }
+  ],
+  "connections": {
+    "RSS Feed AI": {
+      "main": [
+        [
+          {
+            "node": "Analyze & Write",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude AI": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Analyze & Write",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze & Write": {
+      "main": [
+        [
+          {
+            "node": "Filter High Impact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter High Impact": {
+      "main": [
+        [
+          {
+            "node": "LinkedIn Post",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "X Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

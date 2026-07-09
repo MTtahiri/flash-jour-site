@@ -1,0 +1,110 @@
+{
+  "name": "Flash-Jour - Order to CJ & Airtable",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stripe-order-relay",
+        "options": {},
+        "authentication": "headerAuth",
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-N8N-API-KEY",
+              "value": "={{$env.N8N_WEBHOOK_API_KEY}}"
+            }
+          ]
+        }
+      },
+      "name": "Webhook Relay",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [100, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transformation des données pour l'API CJ\nconst order = $node[\"Webhook Relay\"].json;\nreturn {\n  \"orderNumber\": \"FJ-\" + order.order_id,\n  \"shippingAddress\": {\n    \"firstName\": order.customer_name.split(' ')[0] || '',\n    \"lastName\": order.customer_name.split(' ').slice(1).join(' ') || 'Client',\n    \"addressLine1\": order.shipping_address.address.line1,\n    \"city\": order.shipping_address.address.city,\n    \"countryCode\": order.shipping_address.address.country,\n    \"zipCode\": order.shipping_address.address.postal_code\n  },\n  \"products\": [{\n    \"vid\": \"CJJD274007001AZ\",\n    \"quantity\": 1\n  }]\n};"
+      },
+      "name": "Map to CJ API",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [320, 200]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "application": "={{$env.AIRTABLE_BASE_ID}}",
+        "table": "Commandes",
+        "options": {},
+        "fields": [
+          "Order ID",
+          "Email",
+          "Amount",
+          "Status",
+          "SKU"
+        ]
+      },
+      "name": "Airtable Logging",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 1,
+      "position": [320, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://developers.cjdropshipping.com/api2.0/v1/shopping/order/createOrder",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "CJ-Access-Token",
+              "value": "={{$env.CJ_ACCESS_TOKEN}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "data",
+              "value": "={{JSON.stringify($json)}}"
+            }
+          ]
+        }
+      },
+      "name": "Create CJ Order",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [550, 200]
+    }
+  ],
+  "connections": {
+    "Webhook Relay": {
+      "main": [
+        [
+          {
+            "node": "Map to CJ API",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Airtable Logging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map to CJ API": {
+      "main": [
+        [
+          {
+            "node": "Create CJ Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
