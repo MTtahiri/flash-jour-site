@@ -14,67 +14,155 @@
   <link rel="stylesheet" href="/css/main.css" />
   <style>
     .form-wrap { max-width: 640px; margin: 0 auto; }
-    #form-success { display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:2rem; text-align:center; margin-top:1.5rem; }
-    #form-success h2 { color:#166534; } #form-success p { color:#166534; }
-    #form-error { display:none; background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; padding:1rem 1.5rem; color:#991b1b; margin-top:1rem; }
-    .btn-submit:disabled { opacity:.6; cursor:not-allowed; }
+    .step-indicator { display: flex; gap: .5rem; margin-bottom: 2rem; }
+    .step { flex: 1; height: 4px; border-radius: 2px; background: var(--border); }
+    .step.active { background: var(--gold); }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <header><nav>
-    <a href="/" class="logo">Flash-Jour</a>
-    <ul>
-      <li><a href="/acheteurs/">Acheteurs</a></li>
-      <li><a href="/producteurs/">Producteurs</a></li>
-      <li><a href="/comment-ca-marche/">Comment ça marche</a></li>
-      <li><a href="/faq/">FAQ</a></li>
-      <li><a href="/rejoindre/" class="cta" aria-current="page">Rejoindre</a></li>
-    </ul>
-    <div class="lang-switch"><a href="/en/join/">EN</a> | <a href="/ar/rejoindre/">AR</a></div>
-  </nav></header>
-  <div class="page-hero"><div class="container">
-    <h1>Déposez votre candidature</h1>
-    <p>Accès sur dossier. Validation sous 48h. Réseau privé professionnel.</p>
-  </div></div>
-  <main><section class="form-wrap">
-    <p style="font-weight:600;margin-bottom:.8rem;">Je suis :</p>
-    <div class="type-select">
-      <div class="type-btn" id="btn-acheteur" onclick="selectType('acheteur')"><strong>Acheteur</strong><span>Importateur, grossiste, distributeur</span></div>
-      <div class="type-btn" id="btn-producteur" onclick="selectType('producteur')"><strong>Producteur</strong><span>Exportateur, producteur, coopérative</span></div>
+  <header>
+    <nav>
+      <a href="/" class="logo">Flash-Jour</a>
+      <ul>
+        <li><a href="/acheteurs/">Acheteurs</a></li>
+        <li><a href="/producteurs/">Producteurs</a></li>
+        <li><a href="/comment-ca-marche/">Comment ça marche</a></li>
+        <li><a href="/faq/">FAQ</a></li>
+        <li><a href="/rejoindre/" class="cta" aria-current="page">Rejoindre</a></li>
+      </ul>
+      <div class="lang-switch"><a href="/en/join/">EN</a> | <a href="/ar/rejoindre/">AR</a></div>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>Déposez votre candidature</h1>
+      <p>Accès sur dossier. Validation sous 48h. Réseau privé professionnel.</p>
     </div>
-    <form id="candidature-form">
-      <input type="hidden" name="type_membre" id="type_membre" value="" />
-      <div class="form-group"><label for="nom">Nom complet *</label><input type="text" id="nom" name="nom" required placeholder="Prénom Nom" /></div>
-      <div class="form-group"><label for="entreprise">Entreprise *</label><input type="text" id="entreprise" name="entreprise" required placeholder="Nom de votre société" /></div>
-      <div class="form-group"><label for="email">Email professionnel *</label><input type="email" id="email" name="email" required placeholder="vous@entreprise.com" /></div>
-      <div class="form-group"><label for="whatsapp">WhatsApp (avec indicatif pays)</label><input type="tel" id="whatsapp" name="whatsapp" placeholder="+33 6 00 00 00 00" /></div>
-      <div class="form-group"><label for="pays">Pays *</label><select id="pays" name="pays" required><option value="">— Sélectionner —</option><option>France</option><option>Belgique</option><option>Suisse</option><option>Espagne</option><option>Italie</option><option>Allemagne</option><option>Pays-Bas</option><option>Maroc</option><option>Sénégal</option><option>Tunisie</option><option>Égypte</option><option>Turquie</option><option>Pérou</option><option>Autre</option></select></div>
-      <div class="form-group"><label for="produits">Produits concernés *</label><input type="text" id="produits" name="produits" required placeholder="ex: mangues, agrumes, tomates cerises..." /></div>
-      <div class="form-group"><label for="message">Présentez votre activité en quelques lignes *</label><textarea id="message" name="message" required placeholder="Votre activité, vos volumes approximatifs, ce que vous recherchez..."></textarea></div>
-      <button type="submit" class="btn-submit" id="submit-btn">Envoyer ma candidature →</button>
-      <p class="form-note">Vos données sont confidentielles. Aucun partage sans votre accord. Réponse sous 48h.</p>
-      <div id="form-error">Une erreur est survenue. Veuillez réessayer ou écrire à <a href="mailto:contact@flash-jour.com">contact@flash-jour.com</a>.</div>
-    </form>
-    <div id="form-success"><h2>✅ Candidature reçue !</h2><p>Notre équipe examine votre dossier et vous contactera sous <strong>24-48h</strong>.</p></div>
-  </section></main>
+  </div>
+
+  <main>
+    <section class="form-wrap">
+      <p style="font-weight:600; margin-bottom:.8rem;">Je suis :</p>
+      <div class="type-select">
+        <div class="type-btn" id="btn-acheteur" onclick="selectType('acheteur')">
+          <strong>Acheteur</strong>
+          <span>Importateur, grossiste, distributeur</span>
+        </div>
+        <div class="type-btn" id="btn-producteur" onclick="selectType('producteur')">
+          <strong>Producteur</strong>
+          <span>Exportateur, producteur, coopérative</span>
+        </div>
+      </div>
+
+      <form id="candidature-form" action="https://formspree.io/f/VOTRE_ID" method="POST">
+        <input type="hidden" name="type_membre" id="type_membre" value="" />
+        <input type="hidden" name="_subject" value="Nouvelle candidature Flash-Jour" />
+        <div class="form-group">
+          <label for="nom">Nom complet *</label>
+          <input type="text" id="nom" name="nom" required placeholder="Prénom Nom" />
+        </div>
+        <div class="form-group">
+          <label for="entreprise">Entreprise *</label>
+          <input type="text" id="entreprise" name="entreprise" required placeholder="Nom de votre société" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email professionnel *</label>
+          <input type="email" id="email" name="email" required placeholder="vous@entreprise.com" />
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">WhatsApp (avec indicatif pays)</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="+33 6 00 00 00 00" />
+        </div>
+        <div class="form-group">
+          <label for="pays">Pays *</label>
+          <select id="pays" name="pays" required>
+            <option value="">— Sélectionner —</option>
+            <option>France</option><option>Belgique</option><option>Suisse</option>
+            <option>Espagne</option><option>Italie</option><option>Allemagne</option>
+            <option>Pays-Bas</option><option>Maroc</option><option>Sénégal</option>
+            <option>Tunisie</option><option>Égypte</option><option>Turquie</option>
+            <option>Pérou</option><option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="produits">Produits concernés *</label>
+          <input type="text" id="produits" name="produits" required placeholder="ex: mangues, agrumes, tomates cerises..." />
+        </div>
+        <div class="form-group">
+          <label for="message">Présentez votre activité en quelques lignes *</label>
+          <textarea id="message" name="message" required placeholder="Votre activité, vos volumes approximatifs, ce que vous recherchez..."></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Envoyer ma candidature →</button>
+        <p class="form-note">Vos données sont confidentielles. Aucun partage sans votre accord. Réponse sous 48h.</p>
+      </form>
+    </section>
+
+    <section style="max-width:800px; margin:4rem auto; padding:0 1.5rem;">
+      <h2 style="font-size:1.4rem; font-weight:700; margin-bottom:1.5rem;">Pourquoi rejoindre Flash-Jour ?</h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; margin-bottom:2.5rem;">
+        <div>
+          <h3 style="font-size:1rem; font-weight:600; margin-bottom:.5rem;">🔒 Réseau confidentiel</h3>
+          <p style="font-size:.95rem; color:#444; line-height:1.6;">Vos coordonnées ne sont jamais partagées sans votre accord explicite. Vous décidez avec qui vous vous connectez.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1rem; font-weight:600; margin-bottom:.5rem;">✅ Membres vérifiés</h3>
+          <p style="font-size:.95rem; color:#444; line-height:1.6;">Chaque candidature est examinée manuellement. Seuls les professionnels disposant d'une capacité réelle sont acceptés.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1rem; font-weight:600; margin-bottom:.5rem;">🌍 Couverture internationale</h3>
+          <p style="font-size:.95rem; color:#444; line-height:1.6;">Maroc, Sénégal, Pérou, Turquie, Espagne, Égypte, Afrique du Sud — présence sur 4 continents, plus de 20 pays.</p>
+        </div>
+        <div>
+          <h3 style="font-size:1rem; font-weight:600; margin-bottom:.5rem;">⚡ Réponse sous 48h</h3>
+          <p style="font-size:.95rem; color:#444; line-height:1.6;">Déposez votre dossier aujourd'hui. Notre équipe vous répond sous 48h ouvrées avec une décision claire.</p>
+        </div>
+      </div>
+      <h2 style="font-size:1.2rem; font-weight:700; margin-bottom:1rem;">Comment fonctionne l'accès ?</h2>
+      <ol style="padding-left:1.2rem; color:#444; font-size:.95rem; line-height:2;">
+        <li><strong>Déposez votre dossier</strong> via le formulaire ci-dessus en précisant votre activité et vos produits.</li>
+        <li><strong>Notre équipe examine votre candidature</strong> — capacité d'export ou d'import, sérieux de l'entreprise, volumes.</li>
+        <li><strong>Validation et accès</strong> — si votre profil correspond, vous recevez une confirmation sous 48h ouvrées.</li>
+        <li><strong>Mise en relation directe</strong> — consultez les opportunités et échangez directement avec les membres.</li>
+      </ol>
+      <p style="margin-top:2rem; font-size:.9rem; color:#777; line-height:1.7;">Flash-Jour est un réseau B2B privé spécialisé dans les fruits et légumes frais. Nous connectons acheteurs européens — importateurs, grossistes, distributeurs — et producteurs/exportateurs du monde entier, avec un focus sur la qualité, la traçabilité et la confidentialité des échanges. Le réseau est actif à Rungis, Anvers, Rotterdam, Barcelone et dans les principales places de marché européennes.</p>
+    </section>
+
+    <section style="max-width:800px; margin:3rem auto 4rem; padding:1.5rem; background:#f9f9f9; border-radius:8px;">
+      <h2 style="font-size:1.2rem; font-weight:700; margin-bottom:1.2rem;">Questions fréquentes</h2>
+      <div style="margin-bottom:1.2rem;">
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:.4rem;">Quels produits sont disponibles sur Flash-Jour ?</h3>
+        <p style="font-size:.9rem; color:#555; line-height:1.6;">Mangues, agrumes, tomates, avocats, raisins, poivrons, courgettes — en provenance du Maroc, du Sénégal, du Pérou, de l'Espagne, de la Turquie, de l'Égypte et de l'Afrique du Sud.</p>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:.4rem;">L'adhésion est-elle payante ?</h3>
+        <p style="font-size:.9rem; color:#555; line-height:1.6;">L'accès à Flash-Jour est actuellement gratuit pendant notre phase de lancement. Nous privilégions la construction d'un réseau de professionnels vérifiés et fiables.</p>
+      </div>
+      <div style="margin-bottom:1.2rem;">
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:.4rem;">Qui peut rejoindre en tant qu'acheteur ?</h3>
+        <p style="font-size:.9rem; color:#555; line-height:1.6;">Importateurs, grossistes, distributeurs et acheteurs GMS disposant d'un besoin réel en fruits et légumes frais d'importation.</p>
+      </div>
+      <div>
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:.4rem;">Qui peut rejoindre en tant que producteur/exportateur ?</h3>
+        <p style="font-size:.9rem; color:#555; line-height:1.6;">Producteurs, coopératives agricoles et exportateurs disposant d'une capacité d'exportation effective, de certifications valides et d'une expérience à l'international.</p>
+      </div>
+    </section>
+  </main>
+
   <footer>
     <p>© 2025 Flash-Jour — <a href="mailto:contact@flash-jour.com">contact@flash-jour.com</a></p>
     <nav><a href="/mentions-legales/">Mentions légales</a><a href="/confidentialite/">Confidentialité</a></nav>
   </footer>
+
   <script>
-    const WEBHOOK = 'https://smconsulting.app.n8n.cloud/webhook/flash-jour-inscription';
-    function selectType(t){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+t).classList.add('active');document.getElementById('type_membre').value=t;}
-    const params=new URLSearchParams(window.location.search);if(params.get('type'))selectType(params.get('type'));
-    document.getElementById('candidature-form').addEventListener('submit',async function(e){
-      e.preventDefault();
-      const btn=document.getElementById('submit-btn'),err=document.getElementById('form-error');
-      err.style.display='none';btn.disabled=true;btn.textContent='Envoi en cours…';
-      try{
-        const res=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nom:document.getElementById('nom').value,societe:document.getElementById('entreprise').value,email:document.getElementById('email').value,telephone:document.getElementById('whatsapp').value,pays:document.getElementById('pays').value,message:document.getElementById('produits').value+' — '+document.getElementById('message').value,role:document.getElementById('type_membre').value||'Acheteur',source:'flash-jour.com/rejoindre'})});
-        if(res.ok||res.status===200){document.getElementById('candidature-form').style.display='none';document.querySelector('.type-select').style.display='none';document.querySelector('p[style]').style.display='none';document.getElementById('form-success').style.display='block';}
-        else{throw new Error('Statut '+res.status);}
-      }catch(e2){err.style.display='block';btn.disabled=false;btn.textContent='Envoyer ma candidature →';}
-    });
+    function selectType(type) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn-' + type).classList.add('active');
+      document.getElementById('type_membre').value = type;
+    }
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('type')) selectType(params.get('type'));
   </script>
 </body>
 </html>
