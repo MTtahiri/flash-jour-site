@@ -56,9 +56,9 @@
         </div>
       </div>
 
-      <form id="candidature-form" action="https://formspree.io/f/VOTRE_ID" method="POST">
+      <form id="candidature-form">
         <input type="hidden" name="type_membre" id="type_membre" value="" />
-        <input type="hidden" name="_subject" value="Nouvelle candidature Flash-Jour" />
+        <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;" aria-hidden="true" />
         <div class="form-group">
           <label for="nom">Nom complet *</label>
           <input type="text" id="nom" name="nom" required placeholder="Prénom Nom" />
@@ -95,6 +95,7 @@
           <textarea id="message" name="message" required placeholder="Votre activité, vos volumes approximatifs, ce que vous recherchez..."></textarea>
         </div>
         <button type="submit" class="btn-submit">Envoyer ma candidature →</button>
+        <p id="form-status" class="form-note" role="status"></p>
         <p class="form-note">Vos données sont confidentielles. Aucun partage sans votre accord. Réponse sous 48h.</p>
       </form>
     </section>
@@ -163,6 +164,44 @@
     }
     const params = new URLSearchParams(window.location.search);
     if (params.get('type')) selectType(params.get('type'));
+
+    const form = document.getElementById('candidature-form');
+    const statusEl = document.getElementById('form-status');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector('.btn-submit');
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Envoi en cours…';
+      statusEl.style.color = '';
+      try {
+        const res = await fetch('/api/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nom: form.nom.value,
+            entreprise: form.entreprise.value,
+            email: form.email.value,
+            whatsapp: form.whatsapp.value,
+            pays: form.pays.value,
+            produits: form.produits.value,
+            message: form.message.value,
+            type_membre: form.type_membre.value,
+            langue: 'fr',
+            source: 'flash-jour.com/rejoindre',
+            website: form.website.value,
+          }),
+        });
+        if (!res.ok) throw new Error('request_failed');
+        form.reset();
+        Array.from(form.elements).forEach(el => el.disabled = true);
+        statusEl.style.color = '#2ecc71';
+        statusEl.textContent = 'Merci ! Votre candidature a bien été reçue. Réponse sous 48h.';
+      } catch (err) {
+        submitBtn.disabled = false;
+        statusEl.style.color = '#e63946';
+        statusEl.textContent = "Erreur lors de l'envoi. Réessayez ou écrivez à contact@flash-jour.com.";
+      }
+    });
   </script>
 </body>
 </html>

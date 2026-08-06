@@ -42,9 +42,9 @@
           <strong>Producer</strong><span>Exporter, grower, cooperative</span>
         </div>
       </div>
-      <form action="https://formspree.io/f/VOTRE_ID" method="POST">
+      <form id="candidature-form">
         <input type="hidden" name="type_membre" id="type_member" value="" />
-        <input type="hidden" name="_subject" value="New Flash-Jour application" />
+        <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;" aria-hidden="true" />
         <div class="form-group"><label>Full name *</label><input type="text" name="name" required placeholder="First Last" /></div>
         <div class="form-group"><label>Company *</label><input type="text" name="company" required /></div>
         <div class="form-group"><label>Professional email *</label><input type="email" name="email" required /></div>
@@ -53,6 +53,7 @@
         <div class="form-group"><label>Products *</label><input type="text" name="products" required placeholder="e.g. mangoes, citrus, tomatoes..." /></div>
         <div class="form-group"><label>Tell us about your business *</label><textarea name="message" required placeholder="Your activity, approximate volumes, what you are looking for..."></textarea></div>
         <button type="submit" class="btn-submit">Submit my application →</button>
+        <p id="form-status" class="form-note" role="status"></p>
         <p class="form-note">Your data is confidential. No sharing without your consent. Response within 48h.</p>
       </form>
     </section>
@@ -61,8 +62,46 @@
     <p>© 2025 Flash-Jour — <a href="mailto:contact@flash-jour.com">contact@flash-jour.com</a></p>
   </footer>
   <script>
-    function selectType(t){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+t).classList.add('active');document.getElementById('type_membre').value=t;}
+    function selectType(t){document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+t).classList.add('active');document.getElementById('type_member').value=t;}
     const p=new URLSearchParams(window.location.search);if(p.get('type'))selectType(p.get('type'));
+
+    const form = document.getElementById('candidature-form');
+    const statusEl = document.getElementById('form-status');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = form.querySelector('.btn-submit');
+      submitBtn.disabled = true;
+      statusEl.textContent = 'Sending…';
+      statusEl.style.color = '';
+      try {
+        const res = await fetch('/api/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nom: form.name.value,
+            entreprise: form.company.value,
+            email: form.email.value,
+            whatsapp: form.whatsapp.value,
+            pays: form.country.value,
+            produits: form.products.value,
+            message: form.message.value,
+            type_membre: form.type_membre.value,
+            langue: 'en',
+            source: 'flash-jour.com/en/join',
+            website: form.website.value,
+          }),
+        });
+        if (!res.ok) throw new Error('request_failed');
+        form.reset();
+        Array.from(form.elements).forEach(el => el.disabled = true);
+        statusEl.style.color = '#2ecc71';
+        statusEl.textContent = 'Thank you! Your application has been received. Response within 48h.';
+      } catch (err) {
+        submitBtn.disabled = false;
+        statusEl.style.color = '#e63946';
+        statusEl.textContent = 'Submission failed. Please retry or email contact@flash-jour.com.';
+      }
+    });
   </script>
 </body>
 </html>

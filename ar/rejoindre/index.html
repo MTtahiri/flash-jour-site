@@ -32,8 +32,8 @@
   </div>
   <main>
     <section style="max-width:640px; margin:0 auto;">
-      <form action="https://formspree.io/f/VOTRE_ID" method="POST">
-        <input type="hidden" name="_subject" value="طلب انضمام جديد — Flash-Jour" />
+      <form id="candidature-form">
+        <input type="text" name="website" id="website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;" aria-hidden="true" />
         <div class="form-group"><label>الاسم الكامل *</label><input type="text" name="nom" required placeholder="الاسم الأول واسم العائلة" /></div>
         <div class="form-group"><label>الشركة *</label><input type="text" name="entreprise" required /></div>
         <div class="form-group"><label>البريد الإلكتروني المهني *</label><input type="email" name="email" required /></div>
@@ -42,8 +42,47 @@
         <div class="form-group"><label>المنتجات المعنية *</label><input type="text" name="produits" required placeholder="مثال: مانجو، حمضيات، طماطم..." /></div>
         <div class="form-group"><label>صف نشاطك التجاري *</label><textarea name="message" required placeholder="نشاطك، الأحجام التقريبية، ما تبحث عنه..."></textarea></div>
         <button type="submit" class="btn-submit">إرسال طلبي ←</button>
+        <p id="form-status" class="form-note" role="status"></p>
         <p class="form-note">بياناتك سرية. لا مشاركة بدون موافقتك. رد خلال 48 ساعة.</p>
       </form>
+      <script>
+        const form = document.getElementById('candidature-form');
+        const statusEl = document.getElementById('form-status');
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const submitBtn = form.querySelector('.btn-submit');
+          submitBtn.disabled = true;
+          statusEl.textContent = 'جارٍ الإرسال…';
+          statusEl.style.color = '';
+          try {
+            const res = await fetch('/api/join', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                nom: form.nom.value,
+                entreprise: form.entreprise.value,
+                email: form.email.value,
+                whatsapp: form.whatsapp.value,
+                pays: form.pays.value,
+                produits: form.produits.value,
+                message: form.message.value,
+                langue: 'ar',
+                source: 'flash-jour.com/ar/rejoindre',
+                website: form.website.value,
+              }),
+            });
+            if (!res.ok) throw new Error('request_failed');
+            form.reset();
+            Array.from(form.elements).forEach(el => el.disabled = true);
+            statusEl.style.color = '#2ecc71';
+            statusEl.textContent = 'شكراً! تم استلام طلبك. الرد خلال 48 ساعة.';
+          } catch (err) {
+            submitBtn.disabled = false;
+            statusEl.style.color = '#e63946';
+            statusEl.textContent = 'فشل الإرسال. حاول مجدداً أو راسلنا على contact@flash-jour.com.';
+          }
+        });
+      </script>
     </section>
   </main>
   <footer>
