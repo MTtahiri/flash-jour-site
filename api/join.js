@@ -44,9 +44,10 @@ export default async function handler(req, res) {
   const nom = clean(body.nom);
   const email = clean(body.email);
   const entreprise = clean(body.entreprise);
+  const whatsapp = clean(body.whatsapp);
 
-  if (!nom || !email || !entreprise) {
-    return res.status(400).json({ error: 'Champs requis manquants (nom, email, entreprise)' });
+  if (!nom || !email || !entreprise || !whatsapp) {
+    return res.status(400).json({ error: 'Champs requis manquants (nom, email, entreprise, whatsapp)' });
   }
 
   const produits = clean(body.produits);
@@ -58,7 +59,7 @@ export default async function handler(req, res) {
     'Email': email,
     'Société': entreprise,
     'Pays': clean(body.pays),
-    'Téléphone': clean(body.whatsapp),
+    'Téléphone': whatsapp,
     'Message': fullMessage,
     'Statut': 'Nouveau',
     'Source': clean(body.source) || 'flash-jour.com/rejoindre',
